@@ -3,6 +3,7 @@ import { Inknut_Antiqua } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import Footer from "@/components/Footer";
 
 const inknut = Inknut_Antiqua({
   subsets: ["latin"],
@@ -23,7 +24,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${inknut.className}
-      antialiased px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64`}
+      antialiased px-4 md:px-8 lg:px-16 xl:px-32 `}
       >
         <ThemeProvider
           attribute="class"
@@ -34,7 +35,7 @@ export default function RootLayout({
           <div className="flex flex-col min-h-screen">
             <Navbar />
             <main className="flex-grow">{children}</main>
-            <div>footer</div>
+            <Footer />
           </div>
         </ThemeProvider>
       </body>

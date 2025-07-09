@@ -1,6 +1,6 @@
 import { Calendar, FileText, ShoppingCart } from "lucide-react";
 
-export const navlinks = [
+const navlinks = [
   {
     label: "Shop",
     href: "/shop",
@@ -17,3 +17,9 @@ export const navlinks = [
     icon: Calendar,
   },
 ];
+const heroImages = [
+  "/assets/images/dart.jpg",
+  "/assets/images/ps5.jpg",
+  "/assets/images/chess.jpg",
+];
+export { navlinks, heroImages };
