@@ -49,4 +49,31 @@ const whyChooseUs = [
       "Competitive prices and flexible rental options make premium gaming accessible to everyone",
   },
 ];
-export { navlinks, heroImages, whyChooseUs };
+const testimonials = [
+  {
+    star: 5,
+    comment: "Best game night ever — I made new friends!",
+    username: "Amanuel D.",
+    userImg: "",
+  },
+  {
+    star: 5,
+    comment: "I wasn’t even into games before, now I go to every event!",
+    username: "Abel T.",
+    userImg: "",
+  },
+  {
+    star: 5,
+    comment:
+      "Affordable, smooth, and super fun — can’t wait for the next night!",
+    username: "Betty J.",
+    userImg: "",
+  },
+  {
+    star: 5,
+    comment: "Renting was so easy, and everything came in great condition.",
+    username: "Dagi W.",
+    userImg: "",
+  },
+];
+export { navlinks, heroImages, whyChooseUs, testimonials };

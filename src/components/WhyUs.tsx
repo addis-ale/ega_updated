@@ -5,7 +5,7 @@ const WhyUs = () => {
     <div className="mt-8 md:mt-12 lg:mt-15">
       <div className="flex flex-col items-center justify-center gap-8 md:gap-12">
         {/* text */}
-        <h1 className="text-2xl md:text-3xl xl:text-4xl font-bold">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">
           Why Choose Chewata Awaqi?
         </h1>
         {/* card */}
