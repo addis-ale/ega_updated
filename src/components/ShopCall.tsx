@@ -16,7 +16,7 @@ const ShopCall = () => {
           start: "top bottom",
           end: "bottom top",
           toggleActions: "play none none none",
-          scrub: true,
+          // scrub: true,
           //markers: true, // Uncomment to debug
         },
       })
@@ -24,6 +24,10 @@ const ShopCall = () => {
         opacity: 0,
         yPercent: 100,
         scale: 0.5,
+      })
+      .from(".shop_sub_title", {
+        opacity: 0,
+        yPercent: 100,
       });
 
     // Stagger image animation
@@ -96,7 +100,7 @@ const ShopCall = () => {
 
       {/* button */}
       <div className="shop_btn">
-        <Button className="text-xl px-5 py-7 md:p-8 font-semibold bg-green-500">
+        <Button className="text-xl px-5 py-7 md:p-8 font-semibold bg-green-500 cursor-pointer">
           Explore Our Shop
         </Button>
       </div>
