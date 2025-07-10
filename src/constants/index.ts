@@ -1,4 +1,11 @@
-import { Calendar, FileText, ShoppingCart } from "lucide-react";
+import {
+  Briefcase,
+  Calendar,
+  Crown,
+  FileText,
+  HeartHandshake,
+  ShoppingCart,
+} from "lucide-react";
 
 const navlinks = [
   {
@@ -22,4 +29,24 @@ const heroImages = [
   "/assets/images/ps5.jpg",
   "/assets/images/chess.jpg",
 ];
-export { navlinks, heroImages };
+const whyChooseUs = [
+  {
+    icon: Crown,
+    title: "Wide Selection",
+    subtitle:
+      "Extensive collection of board games, card games, and accessories available for both purchase and rental",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Community Events",
+    subtitle:
+      "Regular tournaments, game nights, and special events hosted by our team to bring gamers together",
+  },
+  {
+    icon: Briefcase,
+    title: "Affordable & Accessible",
+    subtitle:
+      "Competitive prices and flexible rental options make premium gaming accessible to everyone",
+  },
+];
+export { navlinks, heroImages, whyChooseUs };
