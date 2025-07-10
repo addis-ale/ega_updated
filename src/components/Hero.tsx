@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 
 const Hero = () => {
   const [heroimgIdx, setHeroImgIdx] = useState(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroImgIdx((prev) => (prev + 1) % heroImages.length);
@@ -19,7 +18,7 @@ const Hero = () => {
     const heroTitle = new SplitText(".title", { type: "words" });
     gsap.from(heroTitle.words, {
       yPercent: 100,
-      duration: 1.8,
+      duration: 1.5,
       ease: "expo.out",
       stagger: 0.06,
     });
@@ -35,7 +34,7 @@ const Hero = () => {
       opacity: 0,
       y: 20,
       scale: 0.5,
-      delay: 2,
+      delay: 1,
     });
   }, []);
 

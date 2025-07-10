@@ -14,9 +14,9 @@ const ShopCall = () => {
         scrollTrigger: {
           trigger: ".shop_img",
           start: "top bottom",
-          end: "bottom top",
-          toggleActions: "play none none none",
-          // scrub: true,
+          end: "bottom 80%",
+          toggleActions: "play play play play",
+          scrub: true,
           //markers: true, // Uncomment to debug
         },
       })
@@ -40,7 +40,22 @@ const ShopCall = () => {
       scrollTrigger: {
         trigger: ".shop_img",
         start: "top 80%", // when image container enters viewport
+        end: "bottom 40%",
         toggleActions: "play none none none", // only once
+        scrub: true,
+        // markers: true,
+      },
+    });
+    gsap.from(".shop_btn", {
+      opacity: 0,
+      yPercent: 100,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".shop_btn",
+        start: "top 80%", // when image container enters viewport
+        end: "bottom 30%",
+        toggleActions: "play none none none", // only once
+        scrub: true,
         // markers: true,
       },
     });
