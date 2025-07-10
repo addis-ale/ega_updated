@@ -4,19 +4,19 @@ import { Button } from "./ui/button";
 const BlogCall = () => {
   return (
     <div className="mt-8 md:mt-12 lg:mt-15">
-      <div className="flex flex-col-reverse md:flex-row gap-4 sm:gap-8 min-h-[300px] md:min-h-[400px]">
+      <div className="flex flex-col-reverse md:flex-row gap-8 min-h-[300px] md:min-h-[400px]">
         {/* left */}
         <div className="flex-1 relative min-h-[300px] md:min-h-0 ">
           <Image
             src={"/assets/images/blog.jpg"}
             alt="blogimage"
-            className="object-cover"
+            className="object-cover rounded-sm"
             fill
           />
         </div>
         {/* right */}
-        <div className="flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 lg:gap-8">
-          <h1 className="text-2xl md:text-3xl lg:text-5xl font-semibold md:font-bold">
+        <div className="flex-1 flex flex-col items-center justify-center gap-6 lg:gap-8">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold md:font-bold ">
             Learn, Explore & Stay Updated
           </h1>
           <p>
