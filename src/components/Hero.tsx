@@ -41,7 +41,7 @@ const Hero = () => {
   return (
     <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4 md:gap-2 min-h-[60vh] md:items-center  rounded-2xl shadow-xl bg-muted/20 ">
       {/* left */}
-      <div className="flex-1 flex items-center justify-center ">
+      <div className="flex-1 flex items-center justify-center p-3 ">
         <div className="flex flex-col items-center md:items-start gap-4 md:gap-6">
           <div className="font-bold text-4xl md:text-5xl flex flex-col items-center gap-4 md:gap-6">
             <span className="title">Play. Share. Connect.</span>

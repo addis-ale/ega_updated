@@ -14,10 +14,10 @@ const Navbar = () => {
   return (
     <nav className="flex items-center justify-between h-16 md:h-20">
       {/* logo */}
-      <div>
+      <Link href={"/"}>
         {/* logo img */}
         <span className=" text-2xl md:text-3xl font-bold">EGA</span>
-      </div>
+      </Link>
       {/* Mobile */}
       <div className="md:hidden flex flex-1 justify-end mr-5">
         <Sheet>
