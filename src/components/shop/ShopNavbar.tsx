@@ -1,5 +1,5 @@
 import { Heart, ShoppingCart } from "lucide-react";
-import SearchInput from "./SearchInput";
+import SearchInput from "../SearchInput";
 import Link from "next/link";
 
 const ShopNavbar = () => {

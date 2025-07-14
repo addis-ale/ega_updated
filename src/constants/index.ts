@@ -76,4 +76,34 @@ const testimonials = [
     userImg: "",
   },
 ];
-export { navlinks, heroImages, whyChooseUs, testimonials };
+const gameCategory = [
+  {
+    label: "Physical Game",
+    id: "physical",
+    value: "physical",
+  },
+  {
+    label: "Board Game",
+    id: "board",
+    value: "board",
+  },
+  {
+    label: "Virtual Game",
+    id: "virtual",
+    value: "virtual",
+  },
+  {
+    label: "Table Game",
+    id: "table",
+    value: "table",
+  },
+];
+const purchaseType = ["Buy", "Rent", "Both"];
+export {
+  navlinks,
+  heroImages,
+  whyChooseUs,
+  testimonials,
+  gameCategory,
+  purchaseType,
+};
