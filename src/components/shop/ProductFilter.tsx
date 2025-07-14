@@ -22,7 +22,7 @@ const ProductFilter = () => {
   //Input values here
   console.log(inputValues);
   return (
-    <div className="px-4 py-2">
+    <div className="px-4 py-2 sticky top-44">
       <div className="flex flex-col gap-6">
         {/* category */}
         <div className="flex flex-col gap-4">

@@ -1,4 +1,3 @@
-import MobileFilter from "./MobileFilter";
 import ProductFilter from "./ProductFilter";
 import ProductList from "./ProductList";
 
@@ -12,10 +11,6 @@ const ProductBrowse = () => {
       {/* list */}
       <div className="md:w-2/3">
         <ProductList />
-      </div>
-      {/* mobile */}
-      <div className="md:hidden">
-        <MobileFilter />
       </div>
     </div>
   );

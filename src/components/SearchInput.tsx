@@ -8,7 +8,7 @@ const SearchInput = () => {
   const [query, setQuery] = useState("");
 
   return (
-    <div className="flex w-full max-w-sm">
+    <div className="flex w-full max-w-sm ">
       <input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
