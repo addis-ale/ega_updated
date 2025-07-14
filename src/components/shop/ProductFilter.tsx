@@ -22,7 +22,7 @@ const ProductFilter = () => {
   //Input values here
   console.log(inputValues);
   return (
-    <div>
+    <div className="px-4 py-2">
       <div className="flex flex-col gap-6">
         {/* category */}
         <div className="flex flex-col gap-4">
@@ -101,7 +101,10 @@ const ProductFilter = () => {
             </RadioGroup>
           </div>
         </div>
-        <div className="flex">
+        <div className="flex items-center justify-between mt-4">
+          <Button className="cursor-pointer w-fit p-3 md:hidden">
+            Apply filters
+          </Button>
           <Button className="cursor-pointer w-fit p-3 ml-auto">
             Reset all
           </Button>
