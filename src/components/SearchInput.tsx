@@ -14,8 +14,8 @@ const SearchInput = () => {
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search here..."
         className={cn(
-          "transition-all duration-300  border border-muted rounded-md rounded-r-none focus: outline-none px-1.5 border-r-0",
-          query ? "w-72" : "w-40 focus:w-72 text-sm "
+          "transition-all duration-300  border border-muted rounded-md rounded-r-none focus: outline-none px-1.5 border-r-0 text-sm text-muted-foreground",
+          query ? "w-56 md:w-72" : "w-40 focus:w-56 md:focus:w-72"
         )}
       />
       <Button

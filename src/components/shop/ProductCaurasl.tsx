@@ -3,11 +3,12 @@ import { formatPriceETB } from "@/lib/utils";
 import { Heart, Send } from "lucide-react";
 import DetailSwapCard from "./ProductImageSwiper";
 import { Button } from "../ui/button";
+
 const ProductCarousal = () => {
   return (
     <div>
       <DetailSwapCard />
-      <div className=" mt-4 flex flex-col gap-4">
+      <div className=" mt-4 flex flex-col gap-4 md:hidden">
         <div className="flex flex-col md:flex-row md:justify-between gap-4 ">
           <div className="flex items-center justify-between max-w-sm gap-2">
             <span>{formatPriceETB(45000)}</span>

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const ShopNavbar = () => {
   return (
-    <div className="flex  fixed top-16 md:top-20 pt-8 md:pt-8 pb-5 xl:right-32 right-4 md:right-8 lg:right-16 bg-background z-50 w-full">
+    <div className="flex fixed top-16 md:top-20 pt-8 md:pt-8 pb-5 xl:right-32 right-4 md:right-8 lg:right-16 bg-background z-50 w-full">
       <div className="flex gap-6 lg:gap-8 ml-auto items-center">
         <SearchInput />
         <Link href={"/shop/favorite"}>
