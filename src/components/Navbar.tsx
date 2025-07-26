@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import Container from "./Container";
+import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
+import { Button } from "./ui/button";
 
 const Navbar = () => {
   return (
@@ -65,12 +67,21 @@ const Navbar = () => {
           </div>
 
           {/* Register Button */}
-          <Link
-            href={"/register"}
-            className="text-xs md:text-sm px-4 py-2 bg-blue-500 rounded-xl"
-          >
-            Register
-          </Link>
+          <SignedOut>
+            <Link
+              href={"/login"}
+              className="text-xs md:text-sm px-4 py-2 bg-blue-500 rounded-xl"
+            >
+              Login
+            </Link>
+          </SignedOut>
+          <SignedIn>
+            <SignOutButton>
+              <Button variant={"destructive"} className="cursor-pointer">
+                Sign Out
+              </Button>
+            </SignOutButton>
+          </SignedIn>
         </nav>
       </Container>
     </div>

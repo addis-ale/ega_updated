@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import Footer from "@/components/Footer";
 import Container from "@/components/Container";
 import { ReactQueryProvider } from "@/components/providers/tenstack-provider";
-
+import { ClerkProvider } from "@clerk/nextjs";
 const inknut = Inknut_Antiqua({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -23,28 +23,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inknut.className}
-      antialiased  `}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${inknut.className}
+        antialiased  `}
         >
-          <ReactQueryProvider>
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="flex-1">
-                <Container>{children}</Container>
-              </main>
-              <Footer />
-            </div>
-          </ReactQueryProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ReactQueryProvider>
+              <div className="flex flex-col min-h-screen">
+                <Navbar />
+                <main className="flex-1">
+                  <Container>{children}</Container>
+                </main>
+                <Footer />
+              </div>
+            </ReactQueryProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
