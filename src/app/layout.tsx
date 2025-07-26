@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import Footer from "@/components/Footer";
 import Container from "@/components/Container";
+import { ReactQueryProvider } from "@/components/providers/tenstack-provider";
 
 const inknut = Inknut_Antiqua({
   subsets: ["latin"],
@@ -33,14 +34,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-
-            <main className="flex-1">
-              <Container>{children}</Container>
-            </main>
-            <Footer />
-          </div>
+          <ReactQueryProvider>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-1">
+                <Container>{children}</Container>
+              </main>
+              <Footer />
+            </div>
+          </ReactQueryProvider>
         </ThemeProvider>
       </body>
     </html>
