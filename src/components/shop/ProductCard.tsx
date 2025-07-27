@@ -33,7 +33,11 @@ const ProductCard = ({ product }: { product: productSchemaValues }) => {
     console.log(date);
     if (date?.from && date?.to) {
       setOpen(false);
+      //TODO: add product to cart with productType rent
     }
+  };
+  const handleBuyBtn = () => {
+    //TODO: add product to cart
   };
   const router = useRouter();
   const { data: favoriteProducts } = useGetFav();
@@ -95,7 +99,10 @@ const ProductCard = ({ product }: { product: productSchemaValues }) => {
                   <span className="text-sm md:text-xs text-muted-foreground">
                     {formatPriceETB(product.productSellingPrice)}
                   </span>
-                  <Button className="bg-chart-2 hover:bg-chart-2 flex items-center gap-2 text-white cursor-pointer">
+                  <Button
+                    className="bg-chart-2 hover:bg-chart-2 flex items-center gap-2 text-white cursor-pointer"
+                    onClick={handleBuyBtn}
+                  >
                     <ShoppingCart className="w-5 h-5 text-white" />
                     Buy
                   </Button>

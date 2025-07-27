@@ -94,3 +94,21 @@ export type GetProductsResponse = {
   totalProduct: number;
   hasMore: boolean;
 };
+export type GetCartItemResponse = {
+  id: number;
+  quantity: number;
+  product: productSchemaValues;
+  actionType: string; // or enum if you have one for ProductType
+  priceAtTime: number; // assuming decimal gets parsed as number
+  rentalStartDate: string | null; // ISO date string or null
+  rentalEndDate: string | null; // ISO date string or null
+  rentalDurationDays: number | null;
+};
+export type AddToCartInput = {
+  productId: number;
+  quantity: number;
+  rentalStartDate: Date;
+  rentalEndDate: Date;
+  actionType: string;
+  priceAtTime: number;
+};

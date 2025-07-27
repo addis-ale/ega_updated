@@ -9,7 +9,6 @@ export const useFavorite = (id: number) => {
   return useMutation({
     mutationFn: async () => {
       const token = await getToken();
-      console.log(token);
       if (!token) {
         throw new Error("AUTH_REQUIRED");
       }
