@@ -10,6 +10,9 @@ export const useFavorite = (id: number) => {
     mutationFn: async () => {
       const token = await getToken();
       console.log(token);
+      if (!token) {
+        throw new Error("AUTH_REQUIRED");
+      }
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_ROUTE}/api/favorite/${id}`,
         {},

@@ -1,30 +1,53 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-import { formatPriceETB, truncateText } from "@/lib/utils";
-import { Calendar, Heart, ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { formatPriceETB, truncateText } from "@/lib/utils";
 import { productSchemaValues } from "@/lib/validation";
+import { Calendar, Heart, ShoppingCart } from "lucide-react";
 import { useFavorite } from "@/hooks/useFavorite";
 import { useGetFav } from "@/hooks/useGetFav";
-import { useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import DatePicker from "../DateRange";
+import { DateRange } from "react-day-picker";
+import { addDays } from "date-fns";
 const ProductCard = ({ product }: { product: productSchemaValues }) => {
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 3),
+  });
+  const [open, setOpen] = useState(false);
+  const handleDateSelect = (selected: DateRange | undefined) => {
+    setDate(selected);
+  };
+  const handleDateSet = () => {
+    console.log(date);
+    if (date?.from && date?.to) {
+      setOpen(false);
+    }
+  };
   const router = useRouter();
-  const { getToken } = useAuth();
-  const handleFavAddRemove = async () => {
-    const token = await getToken();
-    if (!token) {
-      console.log("login");
+  const { data: favoriteProducts } = useGetFav();
+  const { mutate: favAddRemove, error } = useFavorite(product.id);
+  const isFav = favoriteProducts?.some((fav) => fav.id === product.id);
+  useEffect(() => {
+    if (error?.message === "AUTH_REQUIRED") {
       router.push("/login");
     }
+  }, [error, router]);
+  const handleFavAddRemove = () => {
     favAddRemove();
   };
-  const { data: favoriteProducts } = useGetFav();
-  const isFav = favoriteProducts?.some((fav) => fav.id === product.id);
 
-  const { mutate: favAddRemove } = useFavorite(product.id);
   return (
     <div>
       {product && (
@@ -84,10 +107,42 @@ const ProductCard = ({ product }: { product: productSchemaValues }) => {
                     {formatPriceETB(product.productRentalPrice)}/
                     {product.productRentalPrice}
                   </span>
-                  <Button className="bg-chart-1 hover:bg-chart-1 flex items-center gap-2 text-white cursor-pointer">
-                    <Calendar className="w-5 h-5 text-white" />
-                    Rent
-                  </Button>
+                  <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogTrigger asChild>
+                      <Button
+                        className="bg-chart-1 hover:bg-chart-1 flex items-center gap-2 text-white"
+                        onClick={() => setOpen(true)}
+                      >
+                        <Calendar className="w-5 h-5 text-white" />
+                        Rent
+                      </Button>
+                    </DialogTrigger>
+
+                    <DialogContent className="space-y-4 w-xs">
+                      <DialogHeader>
+                        <DialogTitle>Select Rental Dates</DialogTitle>
+                        <DialogDescription>
+                          Please select the rental start and end dates below.
+                        </DialogDescription>
+                      </DialogHeader>
+
+                      {/* Smaller DatePicker */}
+                      <div className="flex flex-col gap-6">
+                        <div className="pt-2">
+                          <DatePicker
+                            value={date}
+                            onChange={handleDateSelect}
+                          />
+                        </div>
+                        <Button
+                          className="bg-blue-500 hover:bg-blue-500 cursor-pointer"
+                          onClick={handleDateSet}
+                        >
+                          Set
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               )}
             </div>
