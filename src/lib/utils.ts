@@ -4,8 +4,11 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
-export function truncateText(text: string, maxLength = 6): string {
+export function truncateText(
+  text: string | undefined | null,
+  maxLength = 6
+): string {
+  if (!text) return "";
   return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 }
 

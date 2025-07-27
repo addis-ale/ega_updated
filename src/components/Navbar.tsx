@@ -1,3 +1,4 @@
+"use client";
 import { navlinks } from "@/constants";
 import Link from "next/link";
 import {
@@ -10,10 +11,17 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import Container from "./Container";
-import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import { Button } from "./ui/button";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Navbar = () => {
+  const queryClient = useQueryClient();
+  const { signOut } = useClerk();
+  const handleLogout = async () => {
+    queryClient.clear(); // ✅ clear cache
+    await signOut(); // 👈 Clerk logout
+  };
   return (
     <div className="fixed top-0 left-0 right-0 w-full bg-background z-50">
       <Container>
@@ -76,11 +84,13 @@ const Navbar = () => {
             </Link>
           </SignedOut>
           <SignedIn>
-            <SignOutButton>
-              <Button variant={"destructive"} className="cursor-pointer">
-                Sign Out
-              </Button>
-            </SignOutButton>
+            <Button
+              onClick={handleLogout}
+              variant={"destructive"}
+              className="cursor-pointer"
+            >
+              Sign Out
+            </Button>
           </SignedIn>
         </nav>
       </Container>

@@ -14,7 +14,6 @@ import { useProducts } from "@/hooks/useProducts";
 const ProductList = () => {
   const { data: getProducts, isPending, isError } = useProducts();
   const productLists = getProducts?.products;
-  console.log(productLists);
   if (isPending) {
     return (
       <div className="flex items-center justify-center text-xl text-green-500">
@@ -24,7 +23,7 @@ const ProductList = () => {
   }
   if (isError) {
     return (
-      <div className="flex items-center justify-center text-xl text-red-500 h-screen">
+      <div className="flex items-center justify-center text-xl text-red-500 ">
         Failed to get the produts please try again...
       </div>
     );
