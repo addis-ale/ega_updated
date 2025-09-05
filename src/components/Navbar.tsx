@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import Container from "./Container";
+import Container from "./container";
 import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { useQueryClient } from "@tanstack/react-query";

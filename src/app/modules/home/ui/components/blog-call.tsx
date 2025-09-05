@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Button } from "@/components/ui/button";
 
-const BlogCall = () => {
+export const BlogCall = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -58,5 +58,3 @@ const BlogCall = () => {
     </div>
   );
 };
-
-export default BlogCall;

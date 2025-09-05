@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { heroImages } from "@/constants";
 
-const Hero = () => {
+export const Hero = () => {
   const [heroimgIdx, setHeroImgIdx] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
@@ -72,5 +72,3 @@ const Hero = () => {
     </div>
   );
 };
-
-export default Hero;

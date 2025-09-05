@@ -3,12 +3,12 @@ import { useEffect, useRef } from "react";
 import { testimonials } from "@/constants";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import StarRating from "@/components/StarRating";
+import StarRating from "@/components/star-rating";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Testimony = () => {
+export const Testimony = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -84,5 +84,3 @@ const Testimony = () => {
     </div>
   );
 };
-
-export default Testimony;

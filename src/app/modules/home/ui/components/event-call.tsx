@@ -4,7 +4,7 @@ import { Button } from "../../../../../components/ui/button";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-const EventCall = () => {
+export const EventCall = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -95,5 +95,3 @@ const EventCall = () => {
     </div>
   );
 };
-
-export default EventCall;

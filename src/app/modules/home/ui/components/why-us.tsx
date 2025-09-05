@@ -6,7 +6,7 @@ import { whyChooseUs } from "@/constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const WhyUs = () => {
+export const WhyUs = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -71,5 +71,3 @@ const WhyUs = () => {
     </div>
   );
 };
-
-export default WhyUs;

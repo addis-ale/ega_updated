@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 gsap.registerPlugin(ScrollTrigger); // ✅ Register scroll plugin
 
-const ShopCall = () => {
+export const ShopCall = () => {
   useGSAP(() => {
     gsap
       .timeline({
@@ -122,5 +122,3 @@ const ShopCall = () => {
     </div>
   );
 };
-
-export default ShopCall;
