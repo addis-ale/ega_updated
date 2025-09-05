@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { testimonials } from "@/constants";
-import StarRating from "./StarRating";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import StarRating from "@/components/StarRating";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 gsap.registerPlugin(ScrollTrigger);
 

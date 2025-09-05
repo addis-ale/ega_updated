@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { whyChooseUs } from "@/constants";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { whyChooseUs } from "@/constants";
 
 gsap.registerPlugin(ScrollTrigger);
 

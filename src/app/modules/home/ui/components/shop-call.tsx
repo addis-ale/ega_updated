@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import { Button } from "./ui/button";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Button } from "@/components/ui/button";
 
 gsap.registerPlugin(ScrollTrigger); // ✅ Register scroll plugin
 

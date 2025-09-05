@@ -1,10 +1,10 @@
 "use client";
-import { heroImages } from "@/constants";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { SplitText } from "gsap/all";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import { heroImages } from "@/constants";
 
 const Hero = () => {
   const [heroimgIdx, setHeroImgIdx] = useState(0);
