@@ -8,26 +8,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { sortBy } from "@/constants";
-import {ProductCard} from "./product-card";
-import {MobileFilter} from "./mobile-filter";
-import { useProducts } from "@/hooks/useProducts";
+//import { ProductCard } from "./product-card";
+import { MobileFilter } from "./mobile-filter";
 export const ProductList = () => {
-  const { data: getProducts, isPending, isError } = useProducts();
-  const productLists = getProducts?.products;
-  if (isPending) {
-    return (
-      <div className="flex items-center justify-center text-xl text-green-500">
-        Loading the products please wait...
-      </div>
-    );
-  }
-  if (isError) {
-    return (
-      <div className="flex items-center justify-center text-xl text-red-500 ">
-        Failed to get the produts please try again...
-      </div>
-    );
-  }
   return (
     <div className="flex flex-col gap-4 lg:gap-6">
       <div className="grid grid-cols-6 items-center sticky top-36 z-30 bg-background pt-10 pb-5">
@@ -60,7 +43,7 @@ export const ProductList = () => {
           </span>
         </div>
       </div>
-
+      {/* 
       {productLists && productLists.length > 0 && (
         <div className="grid grid-cols-6 gap-4">
           {productLists.map((list) => (
@@ -69,7 +52,7 @@ export const ProductList = () => {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -1,12 +1,12 @@
 "use client";
 import { gameCategory, purchaseType } from "@/constants";
-import { Checkbox } from "../../../../../components/ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useSliderWithInput } from "@/hooks/use-slider-with-input";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Button } from "../../../../../components/ui/button";
+import { Button } from "@/components/ui/button";
 
 export const ProductFilter = () => {
   const minValue = 0;
