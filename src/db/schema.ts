@@ -1,17 +1,14 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
-
-export const user = pgTable("user", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: boolean("email_verified").default(false).notNull(),
-  image: text("image"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
-});
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  pgEnum,
+  numeric,
+  integer,
+  unique,
+} from "drizzle-orm/pg-core";
+import { nanoid } from "nanoid";
 
 export const session = pgTable("session", {
   id: text("id").primaryKey(),
@@ -59,3 +56,105 @@ export const verification = pgTable("verification", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+export const user = pgTable("user", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+  emailVerified: boolean("email_verified").default(false).notNull(),
+  image: text("image"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+export const rentOrSaleOrBothEnum = pgEnum("rent_or_sale_or_both", [
+  "RENT",
+  "SALE",
+  "BOTH",
+]);
+export const actionTypeEnum = pgEnum("action_type", ["RENT", "SALE"]);
+export const products = pgTable("products", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => nanoid()),
+  name: text("name").notNull(),
+  image: text("image"),
+  rentOrSale: rentOrSaleOrBothEnum("rent_or_sale"),
+  description: text("description"),
+  sellingPrice: numeric("selling_price", { precision: 10, scale: 2 }),
+  rentalPrice: numeric("rental_price", { precision: 10, scale: 2 }),
+  discountPercentage: numeric("discount_percentage", {
+    precision: 4,
+    scale: 2,
+  }),
+  categoryId: text("category_id")
+    .notNull()
+    .references(() => categories.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+export const categories = pgTable("categories", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => nanoid()),
+  name: text("name").notNull().unique(),
+});
+export const carts = pgTable("carts", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => nanoid()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" })
+    .unique(),
+});
+export const cartItems = pgTable(
+  "cart_items",
+  {
+    id: text("id")
+      .primaryKey()
+      .$default(() => nanoid()),
+    cartId: text("cart_id")
+      .notNull()
+      .references(() => carts.id, { onDelete: "cascade" }),
+    productId: text("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
+    quantity: integer("quantity").notNull().default(1),
+    actionType: actionTypeEnum("action_type").notNull(),
+    salePriceAtAdd: numeric("sale_price_at_add", { precision: 10, scale: 2 }),
+    rentalPriceAtAdd: numeric("rental_price_at_add", {
+      precision: 10,
+      scale: 2,
+    }),
+    rentalStartDate: timestamp("rental_start_date"),
+    rentalEndDate: timestamp("rental_end_date"),
+    rentalDateDuration: integer("rental_date_duration"),
+  },
+  (table) => [unique().on(table.cartId, table.productId)]
+);
+export const favorites = pgTable("favorites", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => nanoid()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" })
+    .unique(),
+});
+export const favoriteItems = pgTable(
+  "favorite_items",
+  {
+    id: text("id")
+      .primaryKey()
+      .$default(() => nanoid()),
+    favoriteId: text("favorite_id")
+      .notNull()
+      .references(() => favorites.id, { onDelete: "cascade" }),
+    productId: text("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
+  },
+  (table) => [unique().on(table.favoriteId, table.productId)]
+);
