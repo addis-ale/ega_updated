@@ -1,0 +1,23 @@
+"use client";
+
+import { PanelLeftCloseIcon, PanelLeftIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useSidebar } from "@/components/ui/sidebar";
+
+export const DashboardNavbar = () => {
+  const { state, toggleSidebar, isMobile } = useSidebar();
+
+  return (
+    <>
+      <nav className="flex px-4 gap-x-2 items-center pt-4 pb-6 border-b bg-background mt-8">
+        <Button className="size-9" variant={"outline"} onClick={toggleSidebar}>
+          {state === "collapsed" || isMobile ? (
+            <PanelLeftIcon className="size-4" />
+          ) : (
+            <PanelLeftCloseIcon className="size-4" />
+          )}
+        </Button>
+      </nav>
+    </>
+  );
+};

@@ -59,7 +59,6 @@ export const SignInView = () => {
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log("[DATA]", data);
     setError(null);
     setPending(true);
     authClient.signIn.email(
@@ -74,14 +73,13 @@ export const SignInView = () => {
           router.push("/");
         },
         onError: ({ error }) => {
-          console.log(error.message);
           setError(error.message);
           setPending(false);
         },
       }
     );
   };
-  console.log("[ERR]", error);
+
   const onSocial = (provider: "google" | "github") => {
     setError(null);
     setPending(true);

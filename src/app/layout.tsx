@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inknut_Antiqua } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 const inknut = Inknut_Antiqua({
   subsets: ["latin"],
@@ -18,20 +20,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inknut.className}
+    <NuqsAdapter>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${inknut.className}
         antialiased  `}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
         >
-          <div>{children}</div>
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Toaster />
+            <div>{children}</div>
+          </ThemeProvider>
+        </body>
+      </html>
+    </NuqsAdapter>
   );
 }
