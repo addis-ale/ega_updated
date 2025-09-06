@@ -76,6 +76,7 @@ export const rentOrSaleOrBothEnum = pgEnum("rent_or_sale_or_both", [
 export const actionTypeEnum = pgEnum("action_type", ["RENT", "SALE"]);
 export const products = pgTable("products", {
   id: text("id")
+    .notNull()
     .primaryKey()
     .$default(() => nanoid()),
   name: text("name").notNull(),
@@ -96,12 +97,14 @@ export const products = pgTable("products", {
 });
 export const categories = pgTable("categories", {
   id: text("id")
+    .notNull()
     .primaryKey()
     .$default(() => nanoid()),
   name: text("name").notNull().unique(),
 });
 export const carts = pgTable("carts", {
   id: text("id")
+    .notNull()
     .primaryKey()
     .$default(() => nanoid()),
   userId: text("user_id")
@@ -113,6 +116,7 @@ export const cartItems = pgTable(
   "cart_items",
   {
     id: text("id")
+      .notNull()
       .primaryKey()
       .$default(() => nanoid()),
     cartId: text("cart_id")
@@ -136,6 +140,7 @@ export const cartItems = pgTable(
 );
 export const favorites = pgTable("favorites", {
   id: text("id")
+    .notNull()
     .primaryKey()
     .$default(() => nanoid()),
   userId: text("user_id")
@@ -147,6 +152,7 @@ export const favoriteItems = pgTable(
   "favorite_items",
   {
     id: text("id")
+      .notNull()
       .primaryKey()
       .$default(() => nanoid()),
     favoriteId: text("favorite_id")
