@@ -1,5 +1,9 @@
 const Page = () => {
-  return <div>display the admin all products with table</div>;
+  return (
+    <div>
+      <div>header with New product</div>
+    </div>
+  );
 };
 
 export default Page;
