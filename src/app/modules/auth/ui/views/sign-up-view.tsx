@@ -79,8 +79,6 @@ export const SignUpView = () => {
     },
   });
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log("[SIGN_UP_DATA]", data);
-
     setError(null);
     setPending(true);
     authClient.signUp.email(
@@ -96,7 +94,6 @@ export const SignUpView = () => {
           router.push("/");
         },
         onError: ({ error }) => {
-          console.log(error);
           setError(error.message);
           setPending(false);
         },
