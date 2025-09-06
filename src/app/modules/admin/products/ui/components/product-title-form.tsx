@@ -1,6 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import { z } from "zod";
 import { insertProductTitleSchema } from "../../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -53,11 +53,9 @@ export const ProductTitleForm = () => {
           )}
         />
         <div className="flex justify-end gap-x-4 items-center">
-          <Link href={"/admin/products"}>
-            <Button className="" type="button" variant={"ghost"}>
-              Cancel
-            </Button>
-          </Link>
+          <Button asChild type="button" variant={"ghost"}>
+            <Link href={"/admin/products"}>Cancel</Link>
+          </Button>
 
           <Button type="submit">Continue</Button>
         </div>
