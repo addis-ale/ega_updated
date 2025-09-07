@@ -4,6 +4,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { TRPCReactProvider } from "@/trpc/client";
 const inknut = Inknut_Antiqua({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -21,22 +22,24 @@ export default function RootLayout({
 }>) {
   return (
     <NuqsAdapter>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${inknut.className}
-        antialiased  `}
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+      <TRPCReactProvider>
+        <html lang="en" suppressHydrationWarning>
+          <body
+            className={`${inknut.className}
+          antialiased  `}
           >
-            <Toaster />
-            <div>{children}</div>
-          </ThemeProvider>
-        </body>
-      </html>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Toaster />
+              <div>{children}</div>
+            </ThemeProvider>
+          </body>
+        </html>
+      </TRPCReactProvider>
     </NuqsAdapter>
   );
 }

@@ -1,4 +1,4 @@
-import { CreateNewProductView } from "@/app/modules/admin/products/ui/views/new-product-view";
+import { CreateNewProductView } from "@/app/modules/admin/products/ui/views/create-new-product-view";
 import { BackLink } from "@/components/back-link";
 
 const Page = () => {

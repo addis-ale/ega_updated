@@ -80,8 +80,11 @@ export const products = pgTable("products", {
     .primaryKey()
     .$default(() => nanoid()),
   name: text("name").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   image: text("image"),
-  rentOrSale: rentOrSaleOrBothEnum("rent_or_sale"),
+  rentOrSale: rentOrSaleOrBothEnum("rent_or_sale_or_both").default("SALE"),
   description: text("description"),
   sellingPrice: numeric("selling_price", { precision: 10, scale: 2 }),
   rentalPrice: numeric("rental_price", { precision: 10, scale: 2 }),
@@ -89,11 +92,10 @@ export const products = pgTable("products", {
     precision: 4,
     scale: 2,
   }),
-  categoryId: text("category_id")
-    .notNull()
-    .references(() => categories.id),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  categoryId: text("category_id").references(() => categories.id),
+  isPosted: boolean("is_posted").default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 export const categories = pgTable("categories", {
   id: text("id")
