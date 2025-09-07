@@ -7,3 +7,7 @@ export const insertProductDescriptionSchema = z.object({
     .string()
     .min(10, { message: "atleart 10 characters of description is required" }),
 });
+
+export const insertProductImagesSchema = z.object({
+  imageUrl: z.string().min(1, "At least one image is required"),
+});

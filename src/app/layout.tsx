@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { Inknut_Antiqua } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { TRPCReactProvider } from "@/trpc/client";
+import { ourFileRouter } from "@/app/api/uploadthing/core";
+
 const inknut = Inknut_Antiqua({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -28,6 +32,7 @@ export default function RootLayout({
             className={`${inknut.className}
           antialiased  `}
           >
+            <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
