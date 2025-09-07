@@ -22,6 +22,33 @@ export const productRoute = createTRPCRouter({
         .returning();
       return newProduct;
     }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().optional(),
+        id: z.string(),
+        isPosted: z.boolean().optional(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { id, isPosted, ...rest } = input;
+      const [product] = await db
+        .select()
+        .from(products)
+        .where(and(eq(products.id, id), eq(products.userId, ctx.auth.user.id)));
+      if (!product) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Product not found",
+        });
+      }
+      const [updatedProduct] = await db
+        .update(products)
+        .set(rest)
+        .where(and(eq(products.id, id), eq(products.userId, ctx.auth.user.id)))
+        .returning();
+      return updatedProduct;
+    }),
   getOne: baseProcedure
     .input(
       z.object({

@@ -1,0 +1,68 @@
+"use client";
+
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
+import { ProductTitleForm } from "../components/product-title-form";
+
+interface Props {
+  productId: string;
+}
+export const CreateNewProductSetupView = ({ productId }: Props) => {
+  const trpc = useTRPC();
+  const { data: product } = useSuspenseQuery(
+    trpc.products.getOne.queryOptions({
+      productId,
+    })
+  );
+  const requiredObj = {
+    name: product.name,
+    desc: product.description,
+    category: product.categoryId,
+    image: product.image,
+    rentOrSaleOrBoth: product.rentOrSale,
+  };
+  const finalrequiredObj =
+    requiredObj.rentOrSaleOrBoth === "BOTH"
+      ? {
+          ...requiredObj,
+          salePrice: product.sellingPrice,
+          rentalPrice: product.rentalPrice,
+        }
+      : requiredObj.rentOrSaleOrBoth === "SALE"
+      ? { ...requiredObj, salePrice: product.sellingPrice }
+      : { ...requiredObj, rentalPrice: product.rentalPrice };
+  const requiredFields = Object.values(finalrequiredObj);
+  const totalFields = requiredFields.length;
+  const completedFields = requiredFields.filter(Boolean).length;
+  //const isComplete = requiredFields.every(Boolean);
+  const completionText = `(${completedFields}/${totalFields})`;
+  const initialProductNameData = {
+    name: product.name,
+  };
+  return (
+    <div className="p-6 flex flex-col gap-4">
+      <div className="flex flex-col gap-2 items-end w-fit">
+        <h1 className="text-2xl">Product Setup</h1>
+        <p className="text-xs text-muted-foreground">
+          Complete all fields {completionText}
+        </p>
+      </div>
+      <div className="grid md:grid-cols-2">
+        <div className="flex flex-col space-y-4">
+          <ProductTitleForm
+            initialData={initialProductNameData}
+            productId={productId}
+          />
+          {/* description */}
+          {/* image */}
+          {/* category */}
+        </div>
+        <div className="flex flex-col space-y-4">
+          {/* sale or rent */}
+          {/* price */}
+          {/* discount */}
+        </div>
+      </div>
+    </div>
+  );
+};

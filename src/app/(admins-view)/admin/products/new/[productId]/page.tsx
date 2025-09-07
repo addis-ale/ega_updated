@@ -1,3 +1,5 @@
+import { CreateNewProductSetupView } from "@/app/modules/admin/products/ui/views/create-new-product-setup-view";
+import { BackLink } from "@/components/back-link";
 import { getQueryClient, trpc } from "@/trpc/server";
 
 interface Props {
@@ -13,10 +15,10 @@ const Page = async ({ params }: Props) => {
     })
   );
   return (
-    <div>
-      single product with an id to see and edit after the admin clicked on the
-      edit on the table
-    </div>
+    <>
+      <BackLink href="/admin/products" label="Back to Products" />
+      <CreateNewProductSetupView productId={productId} />
+    </>
   );
 };
 
