@@ -28,6 +28,7 @@ export const productRoute = createTRPCRouter({
         name: z.string().optional(),
         id: z.string(),
         isPosted: z.boolean().optional(),
+        description: z.string().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {

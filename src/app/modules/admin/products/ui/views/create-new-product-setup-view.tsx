@@ -2,7 +2,8 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
-import { ProductTitleForm } from "../components/product-title-form";
+import { ProductTitleForm } from "../components/title-form";
+import { ProductDescriptionForm } from "../components/description-form";
 
 interface Props {
   productId: string;
@@ -39,6 +40,9 @@ export const CreateNewProductSetupView = ({ productId }: Props) => {
   const initialProductNameData = {
     name: product.name,
   };
+  const initialProductDescData = {
+    description: product.description ?? "",
+  };
   return (
     <div className="p-6 flex flex-col gap-4">
       <div className="flex flex-col gap-2 items-end w-fit">
@@ -47,13 +51,16 @@ export const CreateNewProductSetupView = ({ productId }: Props) => {
           Complete all fields {completionText}
         </p>
       </div>
-      <div className="grid md:grid-cols-2">
+      <div className="grid md:grid-cols-2 gap-6">
         <div className="flex flex-col space-y-4">
           <ProductTitleForm
             initialData={initialProductNameData}
             productId={productId}
           />
-          {/* description */}
+          <ProductDescriptionForm
+            initialData={initialProductDescData}
+            productId={productId}
+          />
           {/* image */}
           {/* category */}
         </div>

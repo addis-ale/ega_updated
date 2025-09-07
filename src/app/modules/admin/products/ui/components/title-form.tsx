@@ -125,7 +125,7 @@ export const ProductTitleForm = ({ initialData, productId }: Props) => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Title</FormLabel>
+                      <FormLabel>Product Name</FormLabel>
                       <FormControl>
                         <Input
                           className="bg-white"
