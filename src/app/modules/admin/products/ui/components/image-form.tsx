@@ -22,6 +22,7 @@ interface Props {
 }
 
 export const ProductImagesForm = ({ initialData, productId }: Props) => {
+  console.log("initial Data for images", initialData);
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [openEdit, setOpenEdit] = useState(false);
@@ -76,16 +77,11 @@ export const ProductImagesForm = ({ initialData, productId }: Props) => {
     trpc.productImages.delete.mutationOptions({
       onSuccess: async () => {
         //TODO: invalidate queries get many courses
-        if (productId)
-          await Promise.all([
-            // queryClient.invalidateQueries(
-            //   trpc.courses.getOne.queryOptions({ id: courseId })
-            // ),
-
-            queryClient.invalidateQueries(
-              trpc.productImages.getMany.queryOptions({ productId })
-            ),
-          ]);
+        if (productId) {
+          await queryClient.invalidateQueries(
+            trpc.productImages.getMany.queryOptions({ productId })
+          );
+        }
         setOpenEdit(false);
         toast.success("Product image deleted!");
       },
@@ -176,8 +172,13 @@ export const ProductImagesForm = ({ initialData, productId }: Props) => {
                   </Button>
                 </div>
               ) : (
-                <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
-                  <ImageIcon className="h-10 w-10 text-slate-500" />
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
+                    <ImageIcon className="h-10 w-10 text-slate-500" />
+                  </div>
+                  <span className="text-xs text-center text-destructive mx-auto">
+                    Please insert at least one product image!
+                  </span>
                 </div>
               )}
             </div>
@@ -194,7 +195,7 @@ export const ProductImagesForm = ({ initialData, productId }: Props) => {
               }}
             />
             <div className="text-xs text-muted-foreground mt-4 text-center">
-              The first image will be the cover image of the product.
+              Upload up to 6 product images. Select one image as the cover.
             </div>
           </div>
         )}
@@ -230,8 +231,8 @@ export const ProductImagesForm = ({ initialData, productId }: Props) => {
               ))}
             </div>
             <div className="text-xs text-muted-foreground mt-4 text-center">
-              Upload up to 6 product images. Select one image as the cover to
-              represent your product.
+              If no cover image is selected, the first image will be used as the
+              cover.
             </div>
           </div>
         )}
