@@ -92,7 +92,7 @@ export const products = pgTable("products", {
     scale: 2,
   }),
   categoryId: text("category_id").references(() => categories.id),
-  isPosted: boolean("is_posted").default(true),
+  isPosted: boolean("is_posted").default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

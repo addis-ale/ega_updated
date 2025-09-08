@@ -20,3 +20,6 @@ export const insertRentOrSaleSchema = z.object({
 export const insertDiscountPercentageSchema = z.object({
   discountPercentage: z.string(),
 });
+export const insertPriceSchema = z.object({
+  price: z.string(),
+});
