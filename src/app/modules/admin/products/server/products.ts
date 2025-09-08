@@ -31,6 +31,7 @@ export const productRoute = createTRPCRouter({
         description: z.string().optional(),
         rentOrSale: z.enum(["BOTH", "SALE", "RENT"]).optional(),
         categoryId: z.string().optional(),
+        discountPercentage: z.string().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {

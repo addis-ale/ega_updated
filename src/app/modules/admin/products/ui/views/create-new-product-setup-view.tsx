@@ -7,6 +7,7 @@ import { ProductDescriptionForm } from "../components/description-form";
 import { ProductImagesForm } from "../components/image-form";
 import { ProductCategoryForm } from "../components/category-form";
 import { RentOrSaleForm } from "../components/sale-or-rent-form";
+import { DiscountPercentagForm } from "../components/discount-percentage-form";
 
 interface Props {
   productId: string;
@@ -73,7 +74,10 @@ export const CreateNewProductSetupView = ({ productId }: Props) => {
         ? "1"
         : "2",
   };
-  console.log(productImages, "images data from setup");
+  const initialDiscountData = {
+    discountPercentage: product.discountPercentage ?? "",
+  };
+
   return (
     <div className="p-6 flex flex-col gap-4">
       <div className="flex flex-col gap-2 items-end w-fit">
@@ -120,9 +124,11 @@ export const CreateNewProductSetupView = ({ productId }: Props) => {
           </div>
         </div>
         <div className="flex flex-col space-y-4">
-          {/* sale or rent */}
           {/* price */}
-          {/* discount */}
+          <DiscountPercentagForm
+            initialData={initialDiscountData}
+            productId={productId}
+          />
         </div>
       </div>
     </div>

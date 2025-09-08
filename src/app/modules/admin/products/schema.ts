@@ -17,3 +17,6 @@ export const insertCategorySchema = z.object({
 export const insertRentOrSaleSchema = z.object({
   rentOrSale: z.string(),
 });
+export const insertDiscountPercentageSchema = z.object({
+  discountPercentage: z.string(),
+});
