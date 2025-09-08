@@ -11,3 +11,9 @@ export const insertProductDescriptionSchema = z.object({
 export const insertProductImagesSchema = z.object({
   imageUrl: z.string().min(1, "At least one image is required"),
 });
+export const insertCategorySchema = z.object({
+  categoryId: z.string(),
+});
+export const insertRentOrSaleSchema = z.object({
+  rentOrSale: z.string(),
+});

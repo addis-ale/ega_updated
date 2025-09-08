@@ -5,6 +5,8 @@ import { useTRPC } from "@/trpc/client";
 import { ProductTitleForm } from "../components/title-form";
 import { ProductDescriptionForm } from "../components/description-form";
 import { ProductImagesForm } from "../components/image-form";
+import { ProductCategoryForm } from "../components/category-form";
+import { RentOrSaleForm } from "../components/sale-or-rent-form";
 
 interface Props {
   productId: string;
@@ -21,11 +23,15 @@ export const CreateNewProductSetupView = ({ productId }: Props) => {
       productId,
     })
   );
+  const { data: categories } = useSuspenseQuery(
+    trpc.productCategories.getMany.queryOptions()
+  );
   const requiredObj = {
     name: product.name,
     desc: product.description,
     category: product.categoryId,
     rentOrSaleOrBoth: product.rentOrSale,
+    coverImg: productImages.length > 0 ? true : null,
     // TODO make image also required
   };
   const finalrequiredObj =
@@ -56,6 +62,17 @@ export const CreateNewProductSetupView = ({ productId }: Props) => {
       isCover: image.isCoverImage ?? false,
     })),
   };
+  const initialCatData = {
+    categoryId: product.categoryId ?? "",
+  };
+  const initalSaleOrRentData = {
+    rentOrSale:
+      (product?.rentOrSale ?? "") === "BOTH"
+        ? "0"
+        : (product?.rentOrSale ?? "") === "SALE"
+        ? "1"
+        : "2",
+  };
   console.log(productImages, "images data from setup");
   return (
     <div className="p-6 flex flex-col gap-4">
@@ -79,7 +96,28 @@ export const CreateNewProductSetupView = ({ productId }: Props) => {
             initialData={initialProductImagesData}
             productId={productId}
           />
-          {/* category */}
+          <div className="grid grid-cols-2 gap-4 ">
+            <ProductCategoryForm
+              initialData={initialCatData}
+              productId={productId}
+              options={(categories || [])?.map((cat) => ({
+                label: cat.name,
+                value: cat.id,
+              }))}
+            />
+            <RentOrSaleForm
+              initialData={initalSaleOrRentData}
+              productId={productId}
+              options={[
+                { label: "BOTH", value: "0" },
+                { label: "SALE", value: "1" },
+                { label: "RENT", value: "2" },
+              ]?.map((cat) => ({
+                label: cat.label,
+                value: cat.value,
+              }))}
+            />
+          </div>
         </div>
         <div className="flex flex-col space-y-4">
           {/* sale or rent */}

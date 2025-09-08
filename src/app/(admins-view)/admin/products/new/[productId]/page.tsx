@@ -22,6 +22,7 @@ const Page = async ({ params }: Props) => {
         productId,
       })
     ),
+    queryClient.prefetchQuery(trpc.productCategories.getMany.queryOptions()),
   ]);
   return (
     <>

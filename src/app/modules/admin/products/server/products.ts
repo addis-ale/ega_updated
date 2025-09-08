@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { products } from "@/db/schema";
+import { categories, products } from "@/db/schema";
 import {
   baseProcedure,
   createTRPCRouter,
@@ -29,6 +29,8 @@ export const productRoute = createTRPCRouter({
         id: z.string(),
         isPosted: z.boolean().optional(),
         description: z.string().optional(),
+        rentOrSale: z.enum(["BOTH", "SALE", "RENT"]).optional(),
+        categoryId: z.string().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -49,6 +51,16 @@ export const productRoute = createTRPCRouter({
         .where(and(eq(products.id, id), eq(products.userId, ctx.auth.user.id)))
         .returning();
       return updatedProduct;
+    }),
+  createcat: baseProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const [created] = await db.insert(categories).values(input).returning();
+      return created;
     }),
   getOne: baseProcedure
     .input(
