@@ -83,7 +83,6 @@ export const products = pgTable("products", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  image: text("image"),
   rentOrSale: rentOrSaleOrBothEnum("rent_or_sale_or_both").default("SALE"),
   description: text("description"),
   sellingPrice: numeric("selling_price", { precision: 10, scale: 2 }),
@@ -93,9 +92,20 @@ export const products = pgTable("products", {
     scale: 2,
   }),
   categoryId: text("category_id").references(() => categories.id),
-  isPosted: boolean("is_posted").default(true),
+  isPosted: boolean("is_posted").default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+export const productImages = pgTable("product_images", {
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .$default(() => nanoid()),
+  productId: text("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  isCoverImage: boolean("is_cover").default(false),
+  imageUrl: text("image_url").notNull(),
 });
 export const categories = pgTable("categories", {
   id: text("id")

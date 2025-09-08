@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductTitleForm } from "../components/product-title-form";
+import { ProductTitleForm } from "../components/title-form";
 
 export const CreateNewProductView = () => {
   return (
