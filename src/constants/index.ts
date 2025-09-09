@@ -121,61 +121,15 @@ const sortBy = [
     value: "price-high",
   },
 ];
-const productLists = [
-  {
-    productId: 1,
-    ProductPurchaseType: PurchaseType.Sale,
-    productName: "FIFA 24 PS5 Disc",
-    productImg: "/assets/images/dart.jpg",
-    productDiscount: 20,
-    productSallingPrice: 2499,
-  },
-  {
-    productId: 2,
-    ProductPurchaseType: PurchaseType.Rent,
-    productName: "God of War Ragnarok",
-    productImg: "/assets/images/chess.jpg",
-    productDiscount: 10,
-    productRentalPrice: 399,
-    productRentPer: "week",
-  },
-  {
-    productId: 3,
-    ProductPurchaseType: PurchaseType.Sale,
-    productName: "Call of Duty Modern Warfare II",
-    productImg: "/assets/images/chess.jpg",
-    productDiscount: 15,
-    productSallingPrice: 2999,
-  },
-  {
-    productId: 4,
-    ProductPurchaseType: PurchaseType.Rent,
-    productName: "Elden Ring PS5",
-    productImg: "/assets/images/dart.jpg",
-    productDiscount: 5,
-    productRentalPrice: 499,
-    productRentPer: "day",
-  },
-  {
-    productId: 5,
-    ProductPurchaseType: PurchaseType.Sale,
-    productName: "Spider-Man: Miles Morales",
-    productImg: "/assets/images/ps5.jpg",
-    productDiscount: 25,
-    productSallingPrice: 1899,
-  },
-  {
-    productId: 6,
-    ProductPurchaseType: PurchaseType.Both,
-    productName: "Hogwarts Legacy",
-    productImg: "/assets/images/tennis.jpg",
-    productDiscount: 15,
-    productSallingPrice: 2599,
-    productRentalPrice: 499,
-    productRentPer: "week",
-  },
-];
+const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 10;
+const MAX_PAGE_SIZE = 100;
+const MIN_PAGE_SIZE = 1;
 export {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+  MAX_PAGE_SIZE,
+  MIN_PAGE_SIZE,
   navlinks,
   heroImages,
   whyChooseUs,
@@ -183,6 +137,5 @@ export {
   gameCategory,
   purchaseType,
   sortBy,
-  productLists,
   PurchaseType,
 };
