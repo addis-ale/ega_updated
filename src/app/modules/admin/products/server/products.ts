@@ -1,12 +1,14 @@
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+  MAX_PAGE_SIZE,
+  MIN_PAGE_SIZE,
+} from "@/constants";
 import { db } from "@/db";
 import { products } from "@/db/schema";
-import {
-  baseProcedure,
-  createTRPCRouter,
-  protectedProcedure,
-} from "@/trpc/init";
+import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { and, eq } from "drizzle-orm";
+import { and, count, desc, eq, ilike } from "drizzle-orm";
 import { z } from "zod";
 export const productRoute = createTRPCRouter({
   create: protectedProcedure
@@ -94,17 +96,22 @@ export const productRoute = createTRPCRouter({
         .returning();
       return deletedProduct;
     }),
-  getOne: baseProcedure
+  getOne: protectedProcedure
     .input(
       z.object({
         productId: z.string(),
       })
     )
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const [existedProduct] = await db
         .select()
         .from(products)
-        .where(eq(products.id, input.productId));
+        .where(
+          and(
+            eq(products.id, input.productId),
+            eq(products.userId, ctx.auth.user.id)
+          )
+        );
       if (!existedProduct) {
         throw new TRPCError({
           code: "NOT_FOUND",
@@ -112,5 +119,47 @@ export const productRoute = createTRPCRouter({
         });
       }
       return existedProduct;
+    }),
+  getMany: protectedProcedure
+    .input(
+      z.object({
+        page: z.number().default(DEFAULT_PAGE),
+        pageSize: z
+          .number()
+          .min(MIN_PAGE_SIZE)
+          .max(MAX_PAGE_SIZE)
+          .default(DEFAULT_PAGE_SIZE),
+        search: z.string().nullish(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const { page, pageSize, search } = input;
+      const myProducts = await db
+        .select()
+        .from(products)
+        .where(
+          and(
+            eq(products.userId, ctx.auth.user.id),
+            search ? ilike(products.name, `%${search}%`) : undefined
+          )
+        )
+        .orderBy(desc(products.createdAt))
+        .limit(pageSize)
+        .offset((page - 1) * pageSize);
+      const [total] = await db
+        .select({ count: count() })
+        .from(products)
+        .where(
+          and(
+            eq(products.userId, ctx.auth.user.id),
+            search ? ilike(products.name, `%${search}%`) : undefined
+          )
+        );
+      const totalPage = Math.ceil(total.count / pageSize);
+      return {
+        items: myProducts,
+        total: total.count,
+        totalPage,
+      };
     }),
 });
