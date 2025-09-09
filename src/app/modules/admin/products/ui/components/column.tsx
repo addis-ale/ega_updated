@@ -90,11 +90,11 @@ export const columns: ColumnDef<GetMany[number]>[] = [
     },
     cell: ({ row }) => {
       const priceValue =
-        row.original.rentalPrice === null
+        row.original.discountPercentage === null
           ? 0
-          : typeof row.original.rentalPrice === "string"
-          ? Number(row.original.rentalPrice)
-          : row.original.rentalPrice;
+          : typeof row.original.discountPercentage === "string"
+          ? Number(row.original.discountPercentage)
+          : row.original.discountPercentage;
       return formatPercentage(priceValue);
     },
   },
@@ -118,7 +118,7 @@ export const columns: ColumnDef<GetMany[number]>[] = [
           variant={isPosted ? "default" : "secondary"}
           className="px-2 py-1 text-xs"
         >
-          {isPosted ? "Published" : "Draft"}
+          {isPosted ? "Posted" : "Draft"}
         </Badge>
       );
     },
@@ -136,7 +136,7 @@ export const columns: ColumnDef<GetMany[number]>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <Link href={`/teacher/tcourses/${id}`}>
+            <Link href={`/admin/products/new/${id}`}>
               <DropdownMenuItem>
                 <Pencil /> Edit
               </DropdownMenuItem>
