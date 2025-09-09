@@ -41,7 +41,7 @@ export const RentOrSaleForm = ({ initialData, productId, options }: Props) => {
     console.log("data", data);
     const { rentOrSale } = data;
     const type =
-      rentOrSale === "0" ? "BOTH" : rentOrSale === "SALE" ? "SALE" : "RENT";
+      rentOrSale === "0" ? "BOTH" : rentOrSale === "1" ? "SALE" : "RENT";
     updateProduct.mutate({ rentOrSale: type, id: productId });
   };
 
