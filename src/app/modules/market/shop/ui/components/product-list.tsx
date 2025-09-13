@@ -8,9 +8,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { sortBy } from "@/constants";
-//import { ProductCard } from "./product-card";
 import { MobileFilter } from "./mobile-filter";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
+import { ProductCard } from "./product-card";
 export const ProductList = () => {
+  const trpc = useTRPC();
+  const { data: productItems } = useSuspenseQuery(
+    trpc.productItems.getMany.queryOptions({})
+  );
+  console.log("ALL_PRODUCTS", productItems);
   return (
     <div className="flex flex-col gap-4 lg:gap-6">
       <div className="grid grid-cols-6 items-center sticky top-36 z-30 bg-background pt-10 pb-5">
@@ -43,16 +50,16 @@ export const ProductList = () => {
           </span>
         </div>
       </div>
-      {/* 
-      {productLists && productLists.length > 0 && (
+
+      {productItems && productItems.length > 0 && (
         <div className="grid grid-cols-6 gap-4">
-          {productLists.map((list) => (
-            <div key={list.id} className="col-span-3 md:col-span-2 ">
-              <ProductCard product={list} />
+          {productItems.map((item) => (
+            <div key={item.products.id} className="col-span-3 md:col-span-2 ">
+              <ProductCard product={item} />
             </div>
           ))}
         </div>
-      )} */}
+      )}
     </div>
   );
 };

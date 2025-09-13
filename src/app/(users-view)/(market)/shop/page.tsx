@@ -3,7 +3,7 @@ import { getQueryClient, trpc } from "@/trpc/server";
 
 const ShopPage = () => {
   const queryClient = getQueryClient();
-  //void queryClient.prefetchQuery()
+  void queryClient.prefetchQuery(trpc.productItems.getMany.queryOptions({}));
   return <ShopView />;
 };
 

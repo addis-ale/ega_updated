@@ -1,7 +1,7 @@
 import { and, eq, ilike, gte, lte, or, asc, desc } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/db";
-import { products } from "@/db/schema";
+import { productImages, products } from "@/db/schema";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 export const shopItemsRoute = createTRPCRouter({
   getMany: baseProcedure
@@ -13,12 +13,7 @@ export const shopItemsRoute = createTRPCRouter({
         maxPrice: z.number().nullish(),
         type: z.enum(["RENT", "SALE"]).nullish(),
         sort: z
-          .enum([
-            "NEWEST", // createdAt desc
-            "POPULAR", // maybe order by views or sales count
-            "PRICE_LOW_HIGH", // price asc
-            "PRICE_HIGH_LOW", // price desc
-          ])
+          .enum(["NEWEST", "POPULAR", "PRICE_LOW_HIGH", "PRICE_HIGH_LOW"])
           .nullish(),
       })
     )
@@ -46,6 +41,13 @@ export const shopItemsRoute = createTRPCRouter({
                 )
               : undefined,
             type ? eq(products.rentOrSale, type) : undefined
+          )
+        )
+        .innerJoin(
+          productImages,
+          and(
+            eq(productImages.productId, products.id),
+            eq(productImages.isCoverImage, true)
           )
         )
         .orderBy(() => {
