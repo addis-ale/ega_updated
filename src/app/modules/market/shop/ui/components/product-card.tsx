@@ -17,7 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import DatePicker from "../../../../../components/date-range";
+import DatePicker from "../../../../../../components/date-range";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
 export const ProductCard = ({ product }: { product: productSchemaValues }) => {

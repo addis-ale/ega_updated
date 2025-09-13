@@ -1,4 +1,4 @@
-import { ProductDetailView } from "@/app/modules/shop/ui/views/product-detail-view";
+import { ProductDetailView } from "@/app/modules/market/shop/ui/views/product-detail-view";
 
 interface Props {
   params: Promise<{ id: string }>;

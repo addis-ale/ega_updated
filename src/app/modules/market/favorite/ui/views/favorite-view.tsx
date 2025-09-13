@@ -1,4 +1,7 @@
 "use client";
+
+import { FavoriteList } from "../components/fav-list";
+
 export const FavoriteView = () => {
   return (
     <div className="mt-40">

@@ -1,4 +1,4 @@
-import { FavoriteView } from "@/app/modules/shop/ui/views/favorite-view";
+import { FavoriteView } from "@/app/modules/market/shop/ui/views/favorite-view";
 
 const FavoritePage = () => {
   return <FavoriteView />;

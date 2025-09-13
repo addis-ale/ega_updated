@@ -2,7 +2,7 @@
 import { formatPriceETB } from "@/lib/utils";
 import { Heart, Send } from "lucide-react";
 import { DetailSwapCard } from "./product-image-swiper";
-import { Button } from "../../../../../components/ui/button";
+import { Button } from "../../../../../../components/ui/button";
 
 export const ProductCarousal = () => {
   return (

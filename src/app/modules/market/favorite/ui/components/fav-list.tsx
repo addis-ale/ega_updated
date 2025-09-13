@@ -1,8 +1,6 @@
 "use client";
-import { ProductCard } from "@/app/modules/shop/ui/components/product-card";
-import { useGetFav } from "@/hooks/useGetFav";
+import { ProductCard } from "@/app/modules/market/shop/ui/components/product-card";
 export const FavoriteList = () => {
-  const { data: favProducts, isPending, isError } = useGetFav();
   if (isPending) {
     return (
       <div className="flex items-center justify-center text-xl text-green-500">

@@ -1,4 +1,4 @@
-import { ShopNavbar } from "@/app/modules/shop/ui/components/shop-navbar";
+import { ShopNavbar } from "@/app/modules/market/shop/ui/components/shop-navbar";
 
 const ShopLayout = ({ children }: { children: React.ReactNode }) => {
   return (
