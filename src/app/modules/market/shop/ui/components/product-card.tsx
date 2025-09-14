@@ -14,31 +14,46 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { ProductLists } from "../../types";
+import { Badge } from "@/components/ui/badge";
 
 interface Props {
   product: ProductLists[number];
 }
+
 export const ProductCard = ({ product }: Props) => {
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(),
     to: addDays(new Date(), 3),
   });
   const [open, setOpen] = useState(false);
+
   const handleDateSelect = (selected: DateRange | undefined) => {
     setDate(selected);
   };
+
   const handleDateSet = () => {
     console.log(date);
     if (date?.from && date?.to) {
       setOpen(false);
-      //TODO: add product to cart with productType rent
+      // TODO: add product to cart with productType rent
     }
   };
-  const handleBuyBtn = () => {
-    //TODO: add product to cart
+
+  const handleBuyBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    // TODO: add product to cart
+  };
+
+  const handleRentBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setOpen(true); // only open the dialog
+  };
+
+  const handleFavBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    // TODO: add to favorites
   };
 
   return (
@@ -47,7 +62,12 @@ export const ProductCard = ({ product }: Props) => {
         <div className="relative overflow-hidden rounded-2xl shadow hover:shadow-lg transition-all w-full">
           {/* Favorite Icon */}
           <div className="absolute top-2 right-2 z-10 bg-muted/70 rounded-full">
-            <Button size="icon" variant="ghost" className="rounded-full">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="rounded-full"
+              onClick={(e) => e.stopPropagation()}
+            >
               <Heart className="h-5 w-5 text-red-500" />
             </Button>
           </div>
@@ -70,13 +90,15 @@ export const ProductCard = ({ product }: Props) => {
           <div className="p-2 space-y-3">
             <div className="flex justify-between items-center">
               <span>{truncateText(product.products.name)}</span>
-              <Button size="sm" variant={"destructive"} className="">
+              <Badge variant={"destructive"} className="p-2">
                 {product.products.discountPercentage}% off
-              </Button>
+              </Badge>
             </div>
+
             <div className="flex md:justify-between flex-col md:flex-row md:items-center gap-2">
+              {/* Buy */}
               {product.products.sellingPrice && (
-                <div className="flex flex-col gap-2 md:gap-4  ">
+                <div className="flex flex-col gap-2 md:gap-4">
                   <span className="text-sm md:text-xs text-muted-foreground">
                     {formatPriceETB(+product.products.sellingPrice)}
                   </span>
@@ -89,23 +111,24 @@ export const ProductCard = ({ product }: Props) => {
                   </Button>
                 </div>
               )}
-              {product.products.rentalPrice && product.products.rentalPrice && (
-                <div className="flex flex-col gap-2 md:gap-4   ">
-                  <span className="text-sm md:text-xs text-muted-foreground text-wrap">
+
+              {/* Rent */}
+              {product.products.rentalPrice && (
+                <div className="flex flex-col gap-2 md:gap-4">
+                  <span className="text-sm md:text-xs text-muted-foreground">
                     {formatPriceETB(+product.products.rentalPrice)}/
                     <span>per day</span>
                   </span>
-                  <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger asChild>
-                      <Button
-                        className="bg-chart-1 hover:bg-chart-1 flex items-center gap-2 text-white"
-                        onClick={() => setOpen(true)}
-                      >
-                        <Calendar className="w-5 h-5 text-white" />
-                        Rent
-                      </Button>
-                    </DialogTrigger>
 
+                  <Button
+                    className="bg-chart-1 hover:bg-chart-1 flex items-center gap-2 text-white"
+                    onClick={handleRentBtn}
+                  >
+                    <Calendar className="w-5 h-5 text-white" />
+                    Rent
+                  </Button>
+
+                  <Dialog open={open} onOpenChange={setOpen}>
                     <DialogContent className="space-y-4 w-xs">
                       <DialogHeader>
                         <DialogTitle>Select Rental Dates</DialogTitle>
