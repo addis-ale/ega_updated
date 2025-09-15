@@ -6,7 +6,7 @@ interface Props {
   filter: Promise<SearchParams>;
 }
 const ShopPage = async ({ filter }: Props) => {
-  const { search, catIds, minPrice, maxPrice, rentOrSale } =
+  const { search, catIds, minPrice, maxPrice, rentOrSale, sort } =
     await loadSearchParams(filter);
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(
@@ -16,6 +16,7 @@ const ShopPage = async ({ filter }: Props) => {
       minPrice,
       maxPrice,
       type: rentOrSale,
+      sort,
     })
   );
   return <ShopView />;
