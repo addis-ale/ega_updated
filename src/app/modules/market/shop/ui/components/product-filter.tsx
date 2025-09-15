@@ -18,7 +18,7 @@ import { useProductsFilter } from "@/hooks/use-products-filter";
 export const ProductFilter = () => {
   const minValue = DEFAULT_MIN_PRICE;
   const maxValue = DEFAULT_MAX_PRICE;
-  const [{ catIds }, setFilter] = useProductsFilter();
+  const [{ catIds, rentOrSale }, setFilter] = useProductsFilter();
   //TODO: do the initial min and max by the products min and max from db
   const initialValue = [DEFAULT_MIN_PRICE, DEFAULT_MAX_PRICE];
   const {
@@ -128,11 +128,19 @@ export const ProductFilter = () => {
         <div className="flex flex-col gap-4">
           <div className="text-2xl font-semibold">Purchase Type</div>
           <div className="flex flex-col gap-2">
-            <RadioGroup defaultValue="Both">
+            <RadioGroup
+              value={rentOrSale} // sync with state
+              onValueChange={(value) =>
+                setFilter({ rentOrSale: value as "RENT" | "BUY" | "BOTH" })
+              }
+            >
               {purchaseType.map((type) => (
-                <div key={type} className="flex items-center gap-3 ">
+                <div key={type} className="flex items-center gap-3">
                   <RadioGroupItem value={type} id={type} />
-                  <Label htmlFor={type} className="text-muted-foreground">
+                  <Label
+                    htmlFor={type}
+                    className="text-muted-foreground cursor-pointer"
+                  >
                     {type}
                   </Label>
                 </div>
@@ -140,6 +148,7 @@ export const ProductFilter = () => {
             </RadioGroup>
           </div>
         </div>
+
         <div className="flex items-center justify-between mt-4">
           <Button className="cursor-pointer w-fit p-3 md:hidden">
             Apply filters

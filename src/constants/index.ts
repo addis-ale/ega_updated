@@ -102,7 +102,7 @@ const gameCategory = [
     value: "table",
   },
 ];
-const purchaseType = ["Buy", "Rent", "Both"];
+const purchaseType = ["BUY", "RENT", "BOTH"];
 const sortBy = [
   {
     label: "Newest",

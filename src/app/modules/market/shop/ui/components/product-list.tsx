@@ -15,13 +15,15 @@ import { ProductCard } from "./product-card";
 import { useProductsFilter } from "@/hooks/use-products-filter";
 export const ProductList = () => {
   const trpc = useTRPC();
-  const [{ search, catIds, minPrice, maxPrice }] = useProductsFilter();
+  const [{ search, catIds, minPrice, maxPrice, rentOrSale }] =
+    useProductsFilter();
   const { data: productItems } = useSuspenseQuery(
     trpc.productItems.getMany.queryOptions({
       search,
       categoryIds: catIds,
       minPrice,
       maxPrice,
+      type: rentOrSale,
     })
   );
   console.log("ALL_PRODUCTS", productItems);

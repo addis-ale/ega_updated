@@ -6,7 +6,8 @@ interface Props {
   filter: Promise<SearchParams>;
 }
 const ShopPage = async ({ filter }: Props) => {
-  const { search, catIds, minPrice, maxPrice } = await loadSearchParams(filter);
+  const { search, catIds, minPrice, maxPrice, rentOrSale } =
+    await loadSearchParams(filter);
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(
     trpc.productItems.getMany.queryOptions({
@@ -14,6 +15,7 @@ const ShopPage = async ({ filter }: Props) => {
       categoryIds: catIds,
       minPrice,
       maxPrice,
+      type: rentOrSale,
     })
   );
   return <ShopView />;

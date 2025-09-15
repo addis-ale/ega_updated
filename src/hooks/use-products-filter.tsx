@@ -3,6 +3,7 @@ import {
   parseAsInteger,
   useQueryStates,
   parseAsArrayOf,
+  parseAsStringEnum,
 } from "nuqs";
 import {
   DEFAULT_MAX_PRICE,
@@ -24,6 +25,9 @@ export const useProductsFilter = () => {
       .withOptions({ clearOnDefault: true }),
     catIds: parseAsArrayOf(parseAsString)
       .withDefault([])
+      .withOptions({ clearOnDefault: true }),
+    rentOrSale: parseAsStringEnum(["RENT", "BUY", "BOTH"])
+      .withDefault("BOTH")
       .withOptions({ clearOnDefault: true }),
   });
 };

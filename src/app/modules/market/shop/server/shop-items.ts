@@ -11,7 +11,7 @@ export const shopItemsRoute = createTRPCRouter({
         categoryIds: z.array(z.string()).nullish(),
         minPrice: z.number().nullish(),
         maxPrice: z.number().nullish(),
-        type: z.enum(["RENT", "SALE"]).nullish(),
+        type: z.enum(["RENT", "BUY", "BOTH"]).nullish(),
         sort: z
           .enum(["NEWEST", "POPULAR", "PRICE_LOW_HIGH", "PRICE_HIGH_LOW"])
           .nullish(),
@@ -42,7 +42,9 @@ export const shopItemsRoute = createTRPCRouter({
                   lte(products.rentalPrice, String(maxPrice))
                 )
               : undefined,
-            type ? eq(products.rentOrSale, type) : undefined
+            type && type !== "BOTH"
+              ? eq(products.rentOrSale, type === "BUY" ? "SALE" : "RENT")
+              : undefined
           )
         )
         .innerJoin(
