@@ -7,46 +7,63 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { sortBy } from "@/constants";
+import { sortBy, sortValueType } from "@/constants";
 import { MobileFilter } from "./mobile-filter";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { ProductCard } from "./product-card";
+import { useProductsFilter } from "@/hooks/use-products-filter";
 export const ProductList = () => {
   const trpc = useTRPC();
-  const { data: productItems } = useSuspenseQuery(
-    trpc.productItems.getMany.queryOptions({})
+  const [{ search, catIds, minPrice, maxPrice, rentOrSale, sort }, setFilter] =
+    useProductsFilter();
+  const { data: products } = useSuspenseQuery(
+    trpc.productItems.getMany.queryOptions({
+      search,
+      categoryIds: catIds,
+      minPrice,
+      maxPrice,
+      type: rentOrSale,
+      sort,
+    })
   );
+  const { items: productItems, totalItems } = products;
   console.log("ALL_PRODUCTS", productItems);
   return (
     <div className="flex flex-col gap-4 lg:gap-6">
       <div className="grid grid-cols-6 items-center sticky top-36 z-30 bg-background pt-10 pb-5">
         <div className="col-span-2">
-          <Select defaultValue="newest">
+          <Select
+            value={sort}
+            onValueChange={(value) =>
+              setFilter({ sort: value as sortValueType })
+            }
+          >
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Sort by:" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {sortBy.map((sort) => (
+                {sortBy.map((fil) => (
                   <SelectItem
-                    key={sort.value}
-                    value={sort.value}
+                    key={fil.value}
+                    value={fil.value}
                     className="text-sm"
                   >
-                    {sort.label}
+                    {fil.label}
                   </SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
+
         <div className="col-start-5 md:col-start-6 col-span-2">
           <div className="md:hidden">
             <MobileFilter />
           </div>
           <span className="text-sm text-muted-foreground hidden md:block">
-            245 Items
+            {totalItems} Items
           </span>
         </div>
       </div>
