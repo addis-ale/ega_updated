@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -108,6 +109,15 @@ export const productImages = pgTable("product_images", {
   isCoverImage: boolean("is_cover").default(false),
   imageUrl: text("image_url").notNull(),
 });
+export const productsRelations = relations(products, ({ many }) => ({
+  images: many(productImages),
+}));
+export const productImageRelations = relations(productImages, ({ one }) => ({
+  product: one(products, {
+    fields: [productImages.productId],
+    references: [products.id],
+  }),
+}));
 export const categories = pgTable("categories", {
   id: text("id")
     .notNull()
