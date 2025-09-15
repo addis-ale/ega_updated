@@ -37,7 +37,18 @@ export const ProductDetailView = ({ productId }: Props) => {
           </div>
           {/* description */}
           <div className="flex-1">
-            <ProductDetailDescription />
+            <ProductDetailDescription
+              productDesc={productItem?.description ?? ""}
+              productName={productItem?.name ?? ""}
+              sellingPrice={
+                productItem?.sellingPrice
+                  ? +productItem.sellingPrice
+                  : undefined
+              }
+              rentalPrice={
+                productItem?.rentalPrice ? +productItem.rentalPrice : undefined
+              }
+            />
           </div>
         </div>
         {/* TODO: Related Products */}
