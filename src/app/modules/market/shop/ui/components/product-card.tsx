@@ -1,5 +1,6 @@
 "use client";
 import { Calendar, Heart, ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { DateRange } from "react-day-picker";
@@ -28,7 +29,7 @@ export const ProductCard = ({ product }: Props) => {
     to: addDays(new Date(), 3),
   });
   const [open, setOpen] = useState(false);
-
+  const router = useRouter();
   const handleDateSelect = (selected: DateRange | undefined) => {
     setDate(selected);
   };
@@ -59,14 +60,17 @@ export const ProductCard = ({ product }: Props) => {
   return (
     <div>
       {product && (
-        <div className="relative overflow-hidden rounded-2xl shadow hover:shadow-lg transition-all w-full">
+        <div
+          className="relative overflow-hidden rounded-2xl shadow hover:shadow-lg transition-all w-full"
+          onClick={() => router.push(`/shop/${product.products.id}`)}
+        >
           {/* Favorite Icon */}
           <div className="absolute top-2 right-2 z-10 bg-muted/70 rounded-full">
             <Button
               size="icon"
               variant="ghost"
               className="rounded-full"
-              onClick={(e) => e.stopPropagation()}
+              onClick={handleFavBtn}
             >
               <Heart className="h-5 w-5 text-red-500" />
             </Button>

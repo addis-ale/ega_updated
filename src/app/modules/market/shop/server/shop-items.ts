@@ -15,6 +15,21 @@ import { db } from "@/db";
 import { productImages, products } from "@/db/schema";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 export const shopItemsRoute = createTRPCRouter({
+  getOne: baseProcedure
+    .input(z.object({ productId: z.string() }))
+    .query(async ({ input }) => {
+      const product = await db.query.products.findFirst({
+        where: eq(products.id, input.productId),
+        with: {
+          images: true,
+        },
+      });
+
+      // optional: only return if posted
+      if (!product || !product.isPosted) return null;
+
+      return product;
+    }),
   getMany: baseProcedure
     .input(
       z.object({

@@ -9,43 +9,13 @@ import Image from "next/image";
 
 type DetailData = {
   images: {
-    thumbnail: string;
+    url: string;
     alt: string;
   }[];
 };
 
-const DEFAULT_PRODUCT: DetailData = {
-  images: [
-    {
-      thumbnail:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=640&h=360&auto=format&fit=crop",
-      alt: "SHSF Work dashboard showing project analytics and team performance metrics",
-    },
-    {
-      thumbnail:
-        "https://images.unsplash.com/photo-1581287053822-fd7bf4f4bfec?q=80&w=640&h=360&auto=format&fit=crop",
-      alt: "SHSF Work collaboration hub with real-time document editing",
-    },
-    {
-      thumbnail:
-        "https://images.unsplash.com/photo-1572177191856-3cde618dee1f?q=80&w=640&h=360&auto=format&fit=crop",
-      alt: "SHSF Work mobile experience with synchronized notifications",
-    },
-    {
-      thumbnail:
-        "https://images.unsplash.com/photo-1553484771-898ed465e931?q=80&w=640&h=360&auto=format&fit=crop",
-      alt: "SHSF Work workflow automation builder interface",
-    },
-    {
-      thumbnail:
-        "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?q=80&w=640&h=360&auto=format&fit=crop",
-      alt: "SHSF Work custom workspace configuration with module marketplace",
-    },
-  ],
-};
-
 type DetailSwapCardProps = React.HTMLAttributes<HTMLDivElement> & {
-  data?: DetailData;
+  data: DetailData;
   onImageChange?: (index: number) => void;
   showImageCounter?: boolean;
   showDotIndicator?: boolean;
@@ -57,7 +27,7 @@ export const DetailSwapCard = React.forwardRef<
   DetailSwapCardProps
 >((props, ref) => {
   const {
-    data = DEFAULT_PRODUCT,
+    data,
     className,
     onImageChange,
     showImageCounter = true,
@@ -111,7 +81,7 @@ export const DetailSwapCard = React.forwardRef<
         <div className="relative h-full w-full overflow-hidden rounded-xl">
           {images.map((image, index) => (
             <div
-              key={image.thumbnail}
+              key={image.url}
               className={cn(
                 "absolute inset-0 h-full w-full transition-all duration-500 ease-out",
                 activeIndex === index
@@ -128,7 +98,7 @@ export const DetailSwapCard = React.forwardRef<
               }}
             >
               <Image
-                src={image.thumbnail}
+                src={image.url}
                 fill
                 alt={image.alt || `Detail image ${index + 1}`}
                 className="h-full w-full object-cover transition-all duration-500"
@@ -210,7 +180,7 @@ export const DetailSwapCard = React.forwardRef<
                 disabled={isTransitioning}
               >
                 <Image
-                  src={image.thumbnail}
+                  src={image.url}
                   fill
                   alt={`Thumbnail ${index + 1}`}
                   className={cn(

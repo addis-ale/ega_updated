@@ -1,4 +1,5 @@
 import { ProductDetailView } from "@/app/modules/market/shop/ui/views/product-detail-view";
+import { getQueryClient, trpc } from "@/trpc/server";
 
 interface Props {
   params: Promise<{ productItemId: string }>;
@@ -6,6 +7,11 @@ interface Props {
 
 export default async function ProductDetail({ params }: Props) {
   const { productItemId } = await params;
-  console.log("id", productItemId);
-  return <ProductDetailView />;
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(
+    trpc.productItems.getOne.queryOptions({
+      productId: productItemId,
+    })
+  );
+  return <ProductDetailView productId={productItemId} />;
 }
