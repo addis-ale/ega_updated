@@ -16,7 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ProductLists } from "../../types";
+import { FavoriteItemsOutput, ProductLists } from "../../types";
 import { Badge } from "@/components/ui/badge";
 import {
   useMutation,
@@ -37,6 +37,8 @@ export const ProductCard = ({ product }: Props) => {
   });
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const handleDateSelect = (selected: DateRange | undefined) => {
     setDate(selected);
   };
@@ -58,27 +60,104 @@ export const ProductCard = ({ product }: Props) => {
     e.stopPropagation();
     setOpen(true); // only open the dialog
   };
-  const trpc = useTRPC();
-  const queryClient = useQueryClient();
   const { data: favoriteItems } = useSuspenseQuery(
     trpc.favoriteItems.getMany.queryOptions()
   );
   const isFavorite = favoriteItems
     .map((item) => item.products.id)
     .some((pr) => pr === product.products.id);
+
   const addToFav = useMutation(
     trpc.favoriteItems.toggle.mutationOptions({
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(
+      onMutate: async (variables) => {
+        // Cancel ongoing queries for consistency
+        await queryClient.cancelQueries(
           trpc.favoriteItems.getMany.queryOptions()
         );
-        toast.success("Added to favorites");
+
+        // Snapshot previous data
+        const previousFavorites = queryClient.getQueryData<FavoriteItemsOutput>(
+          trpc.favoriteItems.getMany.queryKey()
+        );
+        // Optimistically update cache
+        queryClient.setQueryData<FavoriteItemsOutput>(
+          trpc.favoriteItems.getMany.queryKey(),
+          (old) => {
+            if (!old) return old;
+
+            const alreadyFav = old.some(
+              (item) => item.products.id === variables.productId
+            );
+
+            if (alreadyFav) {
+              // Remove it optimistically
+              return old.filter(
+                (item) => item.products.id !== variables.productId
+              );
+            } else {
+              // Add minimal optimistic entry
+              return [
+                ...old,
+                {
+                  products: {
+                    id: variables.productId,
+                    name: "Loading...",
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    userId: "optimistic",
+                    rentOrSale: null,
+                    description: null,
+                    discountPercentage: null,
+                    rentalPrice: null,
+                    sellingPrice: null,
+                    views: null,
+                    categoryId: null,
+                    isPosted: null,
+                  },
+                  product_images: {
+                    id: "optimistic-img",
+                    productId: variables.productId,
+                    isCoverImage: null,
+                    imageUrl: "",
+                  },
+                },
+              ];
+            }
+          }
+        );
+
+        // Return snapshot so we can roll back if error
+        return { previousFavorites };
       },
-      onError: (error) => {
-        toast.error(error.message);
+
+      onError: (err, _vars, context) => {
+        // Rollback to previous state if error
+        if (context?.previousFavorites) {
+          queryClient.setQueryData(
+            trpc.favoriteItems.getMany.queryKey(),
+            context.previousFavorites
+          );
+        }
+        toast.error(err.message);
+      },
+
+      onSettled: () => {
+        // Refetch from server to stay consistent
+        queryClient.invalidateQueries(
+          trpc.favoriteItems.getMany.queryOptions()
+        );
+      },
+
+      onSuccess: (data) => {
+        if (data.action === "added") {
+          toast.success("Added to favorites");
+        } else {
+          toast.success("Removed from favorites");
+        }
       },
     })
   );
+
   const handleFavBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     // TODO: add to favorites
