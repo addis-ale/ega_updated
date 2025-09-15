@@ -90,9 +90,11 @@ export const ProductCard = ({ product }: Props) => {
           <div className="p-2 space-y-3">
             <div className="flex justify-between items-center">
               <span>{truncateText(product.products.name)}</span>
-              <Badge variant={"destructive"} className="p-2">
-                {product.products.discountPercentage}% off
-              </Badge>
+              {product.products.discountPercentage && (
+                <Badge variant={"destructive"} className="p-2">
+                  {product.products.discountPercentage}% off
+                </Badge>
+              )}
             </div>
 
             <div className="flex md:justify-between flex-col md:flex-row md:items-center gap-2">

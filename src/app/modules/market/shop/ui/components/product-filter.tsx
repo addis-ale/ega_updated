@@ -1,5 +1,5 @@
 "use client";
-import { gameCategory, purchaseType } from "@/constants";
+import { purchaseType } from "@/constants";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSliderWithInput } from "@/hooks/use-slider-with-input";
 import { Input } from "@/components/ui/input";
@@ -7,11 +7,14 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
+import { useProductsFilter } from "@/hooks/use-products-filter";
 
 export const ProductFilter = () => {
   const minValue = 0;
   const maxValue = 10000;
-  const initialValue = [50, 150];
+  const initialValue = [50, 15000];
   const {
     sliderValue,
     inputValues,
@@ -21,6 +24,18 @@ export const ProductFilter = () => {
   } = useSliderWithInput({ minValue, maxValue, initialValue });
   //Input values here
   console.log(inputValues);
+  const [{ catIds }, setFilter] = useProductsFilter();
+  const trpc = useTRPC();
+  const { data: gameCategory } = useQuery(
+    trpc.productCategories.getMany.queryOptions()
+  );
+  const toggleCategory = (id: string) => {
+    if (catIds.includes(id)) {
+      setFilter({ catIds: catIds.filter((cat) => cat !== id) });
+    } else {
+      setFilter({ catIds: [...catIds, id] });
+    }
+  };
   return (
     <div className="px-4 py-2 sticky top-44">
       <div className="flex flex-col gap-6">
@@ -28,14 +43,18 @@ export const ProductFilter = () => {
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-semibold">Category</h1>
           <div className="flex flex-col gap-2">
-            {gameCategory.map((cat) => (
+            {gameCategory?.map((cat) => (
               <div
                 key={cat.id}
                 className="flex gap-2 items-center text-muted-foreground "
               >
-                <Checkbox id={cat.id} />
+                <Checkbox
+                  id={cat.id}
+                  checked={catIds.includes(cat.id)}
+                  onCheckedChange={() => toggleCategory(cat.id)}
+                />
                 <label htmlFor={cat.id} className="cursor-pointer text-sm">
-                  {cat.label}
+                  {cat.name}
                 </label>
               </div>
             ))}

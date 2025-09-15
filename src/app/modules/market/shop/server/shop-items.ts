@@ -1,4 +1,4 @@
-import { and, eq, ilike, gte, lte, or, asc, desc } from "drizzle-orm";
+import { and, eq, ilike, gte, lte, or, asc, desc, inArray } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/db";
 import { productImages, products } from "@/db/schema";
@@ -8,7 +8,7 @@ export const shopItemsRoute = createTRPCRouter({
     .input(
       z.object({
         search: z.string().nullish(),
-        categoryId: z.string().nullish(),
+        categoryIds: z.array(z.string()).nullish(),
         minPrice: z.number().nullish(),
         maxPrice: z.number().nullish(),
         type: z.enum(["RENT", "SALE"]).nullish(),
@@ -18,15 +18,17 @@ export const shopItemsRoute = createTRPCRouter({
       })
     )
     .query(async ({ input }) => {
-      const { categoryId, search, minPrice, maxPrice, type, sort } = input;
-
+      const { categoryIds, search, minPrice, maxPrice, type, sort } = input;
       const items = await db
         .select()
         .from(products)
         .where(
           and(
             eq(products.isPosted, true),
-            categoryId ? eq(products.categoryId, categoryId) : undefined,
+            categoryIds && categoryIds.length > 0
+              ? inArray(products.categoryId, categoryIds)
+              : undefined,
+
             search ? ilike(products.name, `%${search}%`) : undefined,
             minPrice
               ? or(

@@ -12,10 +12,15 @@ import { MobileFilter } from "./mobile-filter";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { ProductCard } from "./product-card";
+import { useProductsFilter } from "@/hooks/use-products-filter";
 export const ProductList = () => {
   const trpc = useTRPC();
+  const [{ search, catIds }] = useProductsFilter();
   const { data: productItems } = useSuspenseQuery(
-    trpc.productItems.getMany.queryOptions({})
+    trpc.productItems.getMany.queryOptions({
+      search,
+      categoryIds: catIds,
+    })
   );
   console.log("ALL_PRODUCTS", productItems);
   return (
