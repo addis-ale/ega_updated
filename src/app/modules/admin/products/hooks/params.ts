@@ -4,7 +4,11 @@ import {
   parseAsString,
   parseAsArrayOf,
 } from "nuqs/server";
-import { DEFAULT_PAGE } from "@/constants";
+import {
+  DEFAULT_MAX_PRICE,
+  DEFAULT_MIN_PRICE,
+  DEFAULT_PAGE,
+} from "@/constants";
 
 export const productFilterParams = {
   search: parseAsString.withDefault("").withOptions({ clearOnDefault: true }),
@@ -13,6 +17,12 @@ export const productFilterParams = {
     .withOptions({ clearOnDefault: true }),
   catIds: parseAsArrayOf(parseAsString)
     .withDefault([])
+    .withOptions({ clearOnDefault: true }),
+  minPrice: parseAsInteger
+    .withDefault(DEFAULT_MIN_PRICE)
+    .withOptions({ clearOnDefault: true }),
+  maxPrice: parseAsInteger
+    .withDefault(DEFAULT_MAX_PRICE)
     .withOptions({ clearOnDefault: true }),
 };
 export const loadSearchParams = createLoader(productFilterParams);

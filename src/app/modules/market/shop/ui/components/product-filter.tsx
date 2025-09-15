@@ -1,5 +1,9 @@
 "use client";
-import { purchaseType } from "@/constants";
+import {
+  DEFAULT_MAX_PRICE,
+  DEFAULT_MIN_PRICE,
+  purchaseType,
+} from "@/constants";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSliderWithInput } from "@/hooks/use-slider-with-input";
 import { Input } from "@/components/ui/input";
@@ -12,9 +16,11 @@ import { useTRPC } from "@/trpc/client";
 import { useProductsFilter } from "@/hooks/use-products-filter";
 
 export const ProductFilter = () => {
-  const minValue = 0;
-  const maxValue = 10000;
-  const initialValue = [50, 15000];
+  const minValue = DEFAULT_MIN_PRICE;
+  const maxValue = DEFAULT_MAX_PRICE;
+  const [{ catIds }, setFilter] = useProductsFilter();
+  //TODO: do the initial min and max by the products min and max from db
+  const initialValue = [DEFAULT_MIN_PRICE, DEFAULT_MAX_PRICE];
   const {
     sliderValue,
     inputValues,
@@ -24,7 +30,6 @@ export const ProductFilter = () => {
   } = useSliderWithInput({ minValue, maxValue, initialValue });
   //Input values here
   console.log(inputValues);
-  const [{ catIds }, setFilter] = useProductsFilter();
   const trpc = useTRPC();
   const { data: gameCategory } = useQuery(
     trpc.productCategories.getMany.queryOptions()
@@ -64,13 +69,17 @@ export const ProductFilter = () => {
         <div className="flex flex-col gap-4">
           <div className="text-2xl font-semibold">Price Range</div>
           <div className="*:not-first:mt-3">
-            <div className="flex items-center gap-4">
+            <div className="grid grid-cols-3 items-center gap-4">
+              {/* Min input */}
               <Input
-                className="h-8 w-28 p-2 text-xs text-muted-foreground text-center"
-                type="text"
+                className="h-8  p-2 text-xs text-muted-foreground text-center"
+                type="number"
                 inputMode="decimal"
                 value={inputValues[0]}
-                onChange={(e) => handleInputChange(e, 0)}
+                onChange={(e) => {
+                  handleInputChange(e, 0);
+                  setFilter({ minPrice: +e.target.value });
+                }}
                 onBlur={() => validateAndUpdateValue(inputValues[0], 0)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -79,20 +88,30 @@ export const ProductFilter = () => {
                 }}
                 aria-label="Enter minimum value"
               />
+
+              {/* Slider */}
               <Slider
                 className="grow"
                 value={sliderValue}
-                onValueChange={handleSliderChange}
+                onValueChange={(val) => {
+                  handleSliderChange(val);
+                  setFilter({ minPrice: val[0], maxPrice: val[1] });
+                }}
                 min={minValue}
                 max={maxValue}
                 aria-label="Dual range slider with input"
               />
+
+              {/* Max input */}
               <Input
-                className="h-8 w-28 p-2 text-xs text-muted-foreground text-center"
-                type="text"
+                className="h-8 p-2 text-xs text-muted-foreground text-center"
+                type="number"
                 inputMode="decimal"
                 value={inputValues[1]}
-                onChange={(e) => handleInputChange(e, 1)}
+                onChange={(e) => {
+                  handleInputChange(e, 1);
+                  setFilter({ maxPrice: +e.target.value });
+                }}
                 onBlur={() => validateAndUpdateValue(inputValues[1], 1)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -104,6 +123,7 @@ export const ProductFilter = () => {
             </div>
           </div>
         </div>
+
         {/* type select */}
         <div className="flex flex-col gap-4">
           <div className="text-2xl font-semibold">Purchase Type</div>

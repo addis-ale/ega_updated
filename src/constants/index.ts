@@ -125,11 +125,15 @@ const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 10;
 const MAX_PAGE_SIZE = 100;
 const MIN_PAGE_SIZE = 1;
+const DEFAULT_MIN_PRICE = 0;
+const DEFAULT_MAX_PRICE = 1000000;
 export {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   MAX_PAGE_SIZE,
   MIN_PAGE_SIZE,
+  DEFAULT_MIN_PRICE,
+  DEFAULT_MAX_PRICE,
   navlinks,
   heroImages,
   whyChooseUs,
