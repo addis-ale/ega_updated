@@ -29,5 +29,13 @@ export const useProductsFilter = () => {
     rentOrSale: parseAsStringEnum(["RENT", "BUY", "BOTH"])
       .withDefault("BOTH")
       .withOptions({ clearOnDefault: true }),
+    sort: parseAsStringEnum([
+      "NEWEST",
+      "POPULAR",
+      "PRICE_LOW_HIGH",
+      "PRICE_HIGH_LOW",
+    ])
+      .withDefault("NEWEST")
+      .withOptions({ clearOnDefault: true }),
   });
 };

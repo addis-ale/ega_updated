@@ -1,4 +1,15 @@
-import { and, eq, ilike, gte, lte, or, asc, desc, inArray } from "drizzle-orm";
+import {
+  and,
+  eq,
+  ilike,
+  gte,
+  lte,
+  or,
+  asc,
+  desc,
+  inArray,
+  count,
+} from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/db";
 import { productImages, products } from "@/db/schema";
@@ -68,7 +79,35 @@ export const shopItemsRoute = createTRPCRouter({
               return desc(products.createdAt);
           }
         });
+      const [totalItems] = await db
+        .select({ count: count() })
+        .from(products)
+        .where(
+          and(
+            eq(products.isPosted, true),
+            categoryIds && categoryIds.length > 0
+              ? inArray(products.categoryId, categoryIds)
+              : undefined,
 
-      return items;
+            search ? ilike(products.name, `%${search}%`) : undefined,
+            minPrice
+              ? or(
+                  gte(products.sellingPrice, String(minPrice)),
+                  gte(products.rentalPrice, String(minPrice))
+                )
+              : undefined,
+            maxPrice
+              ? or(
+                  lte(products.sellingPrice, String(maxPrice)),
+                  lte(products.rentalPrice, String(maxPrice))
+                )
+              : undefined,
+            type && type !== "BOTH"
+              ? eq(products.rentOrSale, type === "BUY" ? "SALE" : "RENT")
+              : undefined
+          )
+        );
+
+      return { items, totalItems: totalItems.count };
     }),
 });

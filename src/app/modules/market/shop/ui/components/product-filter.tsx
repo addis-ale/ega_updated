@@ -129,7 +129,7 @@ export const ProductFilter = () => {
           <div className="text-2xl font-semibold">Purchase Type</div>
           <div className="flex flex-col gap-2">
             <RadioGroup
-              value={rentOrSale} // sync with state
+              value={rentOrSale}
               onValueChange={(value) =>
                 setFilter({ rentOrSale: value as "RENT" | "BUY" | "BOTH" })
               }

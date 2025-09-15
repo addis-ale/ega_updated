@@ -103,22 +103,31 @@ const gameCategory = [
   },
 ];
 const purchaseType = ["BUY", "RENT", "BOTH"];
-const sortBy = [
+export type sortValueType =
+  | "NEWEST"
+  | "POPULAR"
+  | "PRICE_LOW_HIGH"
+  | "PRICE_HIGH_LOW";
+type sortByType = {
+  label: string;
+  value: sortValueType;
+};
+const sortBy: sortByType[] = [
   {
     label: "Newest",
-    value: "newest",
+    value: "NEWEST",
   },
   {
     label: "Most Popular",
-    value: "popular",
+    value: "POPULAR",
   },
   {
     label: "Price: Low to High",
-    value: "price-low",
+    value: "PRICE_LOW_HIGH",
   },
   {
     label: "Price: High to Low",
-    value: "price-high",
+    value: "PRICE_HIGH_LOW",
   },
 ];
 const DEFAULT_PAGE = 1;
