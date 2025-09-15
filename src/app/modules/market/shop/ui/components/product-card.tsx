@@ -5,7 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
-import { formatPriceETB, truncateText } from "@/lib/utils";
+import { cn, formatPriceETB, truncateText } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import DatePicker from "@/components/date-range";
 
@@ -18,6 +18,13 @@ import {
 } from "@/components/ui/dialog";
 import { ProductLists } from "../../types";
 import { Badge } from "@/components/ui/badge";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
+import { toast } from "sonner";
 
 interface Props {
   product: ProductLists[number];
@@ -51,10 +58,31 @@ export const ProductCard = ({ product }: Props) => {
     e.stopPropagation();
     setOpen(true); // only open the dialog
   };
-
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const { data: favoriteItems } = useSuspenseQuery(
+    trpc.favoriteItems.getMany.queryOptions()
+  );
+  const isFavorite = favoriteItems
+    .map((item) => item.products.id)
+    .some((pr) => pr === product.products.id);
+  const addToFav = useMutation(
+    trpc.favoriteItems.toggle.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(
+          trpc.favoriteItems.getMany.queryOptions()
+        );
+        toast.success("Added to favorites");
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    })
+  );
   const handleFavBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     // TODO: add to favorites
+    addToFav.mutate({ productId: product.products.id });
   };
 
   return (
@@ -72,7 +100,12 @@ export const ProductCard = ({ product }: Props) => {
               className="rounded-full"
               onClick={handleFavBtn}
             >
-              <Heart className="h-5 w-5 text-red-500" />
+              <Heart
+                className={cn(
+                  "h-5 w-5 text-red-500",
+                  isFavorite && "fill-red-500"
+                )}
+              />
             </Button>
           </div>
 

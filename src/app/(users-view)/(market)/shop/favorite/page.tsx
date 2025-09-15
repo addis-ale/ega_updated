@@ -1,7 +1,26 @@
-import { FavoriteView } from "@/app/modules/market/shop/ui/views/favorite-view";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { FavoriteView } from "@/app/modules/market/favorite/ui/views/favorite-view";
+import { getQueryClient, trpc } from "@/trpc/server";
 
 const FavoritePage = () => {
-  return <FavoriteView />;
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(trpc.favoriteItems.getMany.queryOptions());
+  return (
+    <div className="mt-40">
+      <h1 className="text-center text-2xl md:text-3xl font-bold">
+        Your Favorites Products
+      </h1>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<p>loading</p>}>
+          <ErrorBoundary fallback={<p>Error</p>}>
+            <FavoriteView />
+          </ErrorBoundary>
+        </Suspense>
+      </HydrationBoundary>
+    </div>
+  );
 };
 
 export default FavoritePage;
