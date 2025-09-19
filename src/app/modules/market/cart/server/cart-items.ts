@@ -2,7 +2,7 @@ import { z } from "zod";
 import { and, eq, inArray } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { db } from "@/db";
-import { cartItems, carts, productImages, products } from "@/db/schema";
+import { cartItems, carts, products } from "@/db/schema";
 
 export const cartItemsRoute = createTRPCRouter({
   create: protectedProcedure
@@ -91,19 +91,13 @@ export const cartItemsRoute = createTRPCRouter({
 
       .where(eq(cartItems.cartId, userCart.id));
     const cartItemIds = myCartItems.map((id) => id.cartItemId);
-    const myCart = await db
-      .select()
-      .from(products)
-      .where(
-        and(inArray(products.id, cartItemIds), eq(products.isPosted, true))
-      )
-      .innerJoin(
-        productImages,
-        and(
-          eq(productImages.productId, products.id),
-          eq(productImages.isCoverImage, true)
-        )
-      );
+    const myCart = db.query.products.findMany({
+      where: and(
+        inArray(products.id, cartItemIds),
+        eq(products.isPosted, true)
+      ),
+      with: { images: true },
+    });
     return myCart;
   }),
   //TODO: update and remove item from cart

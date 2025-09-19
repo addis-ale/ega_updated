@@ -33,27 +33,27 @@ export const useAddToCart = () => {
             return [
               ...old,
               {
-                products: {
-                  id: variables.productId,
-                  name: "Loading...",
-                  createdAt: new Date().toISOString(),
-                  updatedAt: new Date().toISOString(),
-                  userId: "optimistic",
-                  rentOrSale: null,
-                  description: null,
-                  discountPercentage: null,
-                  rentalPrice: null,
-                  sellingPrice: null,
-                  views: null,
-                  categoryId: null,
-                  isPosted: null,
-                },
-                product_images: {
-                  id: "optimistic-img",
-                  productId: variables.productId,
-                  isCoverImage: null,
-                  imageUrl: "",
-                },
+                id: "optimistic-id",
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                userId: "optimistic",
+                name: "Loading...",
+                rentOrSale: variables.actionType === "RENT" ? "RENT" : "SALE",
+                description: null,
+                sellingPrice: variables.salePriceAtAdd ?? null,
+                rentalPrice: variables.rentalPriceAtAdd ?? null,
+                discountPercentage: null,
+                categoryId: null,
+                isPosted: null,
+                views: null,
+                images: [
+                  {
+                    id: "optimistic-img",
+                    productId: variables.productId,
+                    isCoverImage: true,
+                    imageUrl: "",
+                  },
+                ],
               },
             ];
           }
@@ -64,16 +64,14 @@ export const useAddToCart = () => {
       onError: (err, _vars, context) => {
         if (context?.previousCartItems) {
           queryClient.setQueryData(
-            trpc.favoriteItems.getMany.queryKey(),
+            trpc.cartItems.getMany.queryKey(),
             context.previousCartItems
           );
         }
         toast.error(err.message);
       },
       onSettled: () => {
-        queryClient.invalidateQueries(
-          trpc.favoriteItems.getMany.queryOptions()
-        );
+        queryClient.invalidateQueries(trpc.cartItems.getMany.queryOptions());
       },
       onSuccess: () => {
         toast.success("Added to cart");
