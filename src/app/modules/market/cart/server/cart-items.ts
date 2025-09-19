@@ -1,8 +1,30 @@
 import { z } from "zod";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { db } from "@/db";
-import { cartItems, carts, products } from "@/db/schema";
+import { cartItems, carts, productImages, products } from "@/db/schema";
+type CartItemImage = {
+  url: string;
+  isCover: boolean | null;
+};
+
+type CartItemProduct = {
+  id: string;
+  name: string;
+  images: CartItemImage[];
+};
+
+type CartItemWithProduct = {
+  id: string;
+  quantity: number;
+  actionType: string;
+  salePriceAtAdd: string | null;
+  rentalPriceAtAdd: string | null;
+  rentalStartDate: Date | null;
+  rentalEndDate: Date | null;
+  rentalDateDuration: number | null;
+  product: CartItemProduct;
+};
 
 export const cartItemsRoute = createTRPCRouter({
   create: protectedProcedure
@@ -77,28 +99,67 @@ export const cartItemsRoute = createTRPCRouter({
     }),
 
   getMany: protectedProcedure.query(async ({ ctx }) => {
+    // 1. Get the user's cart
     const [userCart] = await db
       .select()
       .from(carts)
       .where(eq(carts.userId, ctx.auth.user.id));
 
     if (!userCart) return [];
-    const myCartItems = await db
+
+    // 2. Fetch cart items with product + image joins
+    const result = await db
       .select({
-        cartItemId: cartItems.productId,
+        id: cartItems.id,
+        quantity: cartItems.quantity,
+        actionType: cartItems.actionType,
+        salePriceAtAdd: cartItems.salePriceAtAdd,
+        rentalPriceAtAdd: cartItems.rentalPriceAtAdd,
+        rentalStartDate: cartItems.rentalStartDate,
+        rentalEndDate: cartItems.rentalEndDate,
+        rentalDateDuration: cartItems.rentalDateDuration,
+        productName: products.name,
+        imageUrl: productImages.imageUrl,
+        isCover: productImages.isCoverImage,
+        productId: products.id,
       })
       .from(cartItems)
-
+      .innerJoin(products, eq(cartItems.productId, products.id))
+      .leftJoin(productImages, eq(products.id, productImages.productId))
       .where(eq(cartItems.cartId, userCart.id));
-    const cartItemIds = myCartItems.map((id) => id.cartItemId);
-    const myCart = db.query.products.findMany({
-      where: and(
-        inArray(products.id, cartItemIds),
-        eq(products.isPosted, true)
-      ),
-      with: { images: true },
-    });
-    return myCart;
+
+    // 3. Group using Map with correct typing
+    const groupedMap = new Map<string, CartItemWithProduct>();
+
+    for (const row of result) {
+      if (!groupedMap.has(row.id)) {
+        groupedMap.set(row.id, {
+          id: row.id,
+          quantity: row.quantity,
+          actionType: row.actionType,
+          salePriceAtAdd: row.salePriceAtAdd,
+          rentalPriceAtAdd: row.rentalPriceAtAdd,
+          rentalStartDate: row.rentalStartDate,
+          rentalEndDate: row.rentalEndDate,
+          rentalDateDuration: row.rentalDateDuration,
+          product: {
+            id: row.productId,
+            name: row.productName,
+            images: [],
+          },
+        });
+      }
+
+      const item = groupedMap.get(row.id)!; // non-null since we just set it
+      if (row.imageUrl) {
+        item.product.images.push({
+          url: row.imageUrl,
+          isCover: row.isCover,
+        });
+      }
+    }
+
+    return Array.from(groupedMap.values());
   }),
   //TODO: update and remove item from cart
 });

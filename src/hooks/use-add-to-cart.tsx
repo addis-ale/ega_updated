@@ -23,37 +23,37 @@ export const useAddToCart = () => {
     trpc.cartItems.create.mutationOptions({
       onMutate: async (variables) => {
         await queryClient.cancelQueries(trpc.cartItems.getMany.queryOptions());
+
         const previousCartItems = queryClient.getQueryData<cartItemsOutput>(
           trpc.cartItems.getMany.queryKey()
         );
+
         queryClient.setQueryData<cartItemsOutput>(
           trpc.cartItems.getMany.queryKey(),
           (old) => {
             if (!old) return old;
+
             return [
               ...old,
               {
                 id: "optimistic-id",
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                userId: "optimistic",
-                name: "Loading...",
-                rentOrSale: variables.actionType === "RENT" ? "RENT" : "SALE",
-                description: null,
-                sellingPrice: variables.salePriceAtAdd ?? null,
-                rentalPrice: variables.rentalPriceAtAdd ?? null,
-                discountPercentage: null,
-                categoryId: null,
-                isPosted: null,
-                views: null,
-                images: [
-                  {
-                    id: "optimistic-img",
-                    productId: variables.productId,
-                    isCoverImage: true,
-                    imageUrl: "",
-                  },
-                ],
+                quantity: variables.quantity ?? 1,
+                actionType: variables.actionType,
+                salePriceAtAdd: variables.salePriceAtAdd ?? null,
+                rentalPriceAtAdd: variables.rentalPriceAtAdd ?? null,
+                rentalStartDate: variables.rentalStartDate ?? null,
+                rentalEndDate: variables.rentalEndDate ?? null,
+                rentalDateDuration: null,
+                product: {
+                  id: variables.productId,
+                  name: "Loading...", // placeholder until real product fetched
+                  images: [
+                    {
+                      url: "",
+                      isCover: true,
+                    },
+                  ],
+                },
               },
             ];
           }
@@ -78,6 +78,7 @@ export const useAddToCart = () => {
       },
     })
   );
+
   const addToCart = (params: AddToCartParams) => {
     mutation.mutate({
       productId: params.productId,
