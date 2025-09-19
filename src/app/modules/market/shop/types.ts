@@ -5,3 +5,4 @@ export type ProductLists =
   inferRouterOutputs<AppRouter>["productItems"]["getMany"]["items"];
 type RouterOutput = inferRouterOutputs<AppRouter>;
 export type FavoriteItemsOutput = RouterOutput["favoriteItems"]["getMany"];
+export type cartItemsOutput = RouterOutput["cartItems"]["getMany"];
