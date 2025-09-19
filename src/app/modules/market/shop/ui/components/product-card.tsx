@@ -4,11 +4,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { DateRange } from "react-day-picker";
+import { toast } from "sonner";
 import { addDays } from "date-fns";
 import { cn, formatPriceETB, truncateText } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import DatePicker from "@/components/date-range";
-
 import {
   Dialog,
   DialogContent,
@@ -20,6 +19,8 @@ import { ProductLists } from "../../types";
 import { Badge } from "@/components/ui/badge";
 
 import { useFavorite } from "@/hooks/use-favorite";
+import { useAddToCart } from "@/hooks/use-add-to-cart";
+import { RentalDatePicker } from "./rental-date-picker";
 
 interface Props {
   product: ProductLists[number];
@@ -33,28 +34,51 @@ export const ProductCard = ({ product }: Props) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const handleDateSelect = (selected: DateRange | undefined) => {
-    setDate(selected);
-  };
-
-  const handleDateSet = () => {
-    console.log(date);
-    if (date?.from && date?.to) {
-      setOpen(false);
-      // TODO: add product to cart with productType rent
-    }
-  };
+  const { addToCart, isLoading } = useAddToCart();
+  const { toggleFavorite, isFavorite } = useFavorite(product.products.id);
 
   const handleBuyBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // TODO: add product to cart
+    if (!product.products.sellingPrice) {
+      toast.error("This product is not available for sale");
+      return;
+    }
+
+    addToCart({
+      productId: product.products.id,
+      actionType: "SALE",
+      salePriceAtAdd: product.products.sellingPrice.toString(),
+    });
   };
 
   const handleRentBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    setOpen(true); // only open the dialog
+    setOpen(true);
   };
-  const { toggleFavorite, isFavorite } = useFavorite(product.products.id);
+
+  // const handleDateSet = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.stopPropagation();
+
+  //   if (!product.products.rentalPrice) {
+  //     toast.error("This product is not available for rent");
+  //     return;
+  //   }
+  //   if (!date?.from || !date?.to) {
+  //     toast.error("Please select a rental start and end date");
+  //     return;
+  //   }
+
+  //   addToCart({
+  //     productId: product.products.id,
+  //     actionType: "RENT",
+  //     rentalPriceAtAdd: product.products.rentalPrice.toString(),
+  //     rentalStartDate: date.from.toISOString(),
+  //     rentalEndDate: date.to.toISOString(),
+  //   });
+
+  //   setOpen(false);
+  // };
+
   return (
     <div>
       {product && (
@@ -115,6 +139,7 @@ export const ProductCard = ({ product }: Props) => {
                     {formatPriceETB(+product.products.sellingPrice)}
                   </span>
                   <Button
+                    disabled={isLoading}
                     className="bg-chart-2 hover:bg-chart-2 flex items-center gap-2 text-white cursor-pointer"
                     onClick={handleBuyBtn}
                   >
@@ -133,6 +158,7 @@ export const ProductCard = ({ product }: Props) => {
                   </span>
 
                   <Button
+                    disabled={isLoading}
                     className="bg-chart-1 hover:bg-chart-1 flex items-center gap-2 text-white"
                     onClick={handleRentBtn}
                   >
@@ -149,21 +175,30 @@ export const ProductCard = ({ product }: Props) => {
                         </DialogDescription>
                       </DialogHeader>
 
-                      {/* Smaller DatePicker */}
-                      <div className="flex flex-col gap-6">
-                        <div className="pt-2">
-                          <DatePicker
-                            value={date}
-                            onChange={handleDateSelect}
-                          />
-                        </div>
-                        <Button
-                          className="bg-blue-500 hover:bg-blue-500 cursor-pointer"
-                          onClick={handleDateSet}
-                        >
-                          Set
-                        </Button>
-                      </div>
+                      <RentalDatePicker
+                        defaultValue={date}
+                        onConfirm={(selectedDate) => {
+                          if (!product.products.rentalPrice) {
+                            toast.error(
+                              "This product is not available for rent"
+                            );
+                            return;
+                          }
+
+                          addToCart({
+                            productId: product.products.id,
+                            actionType: "RENT",
+                            rentalPriceAtAdd:
+                              product.products.rentalPrice.toString(),
+                            rentalStartDate: selectedDate.from!.toISOString(),
+                            rentalEndDate: selectedDate.to!.toISOString(),
+                          });
+
+                          setDate(selectedDate);
+                          setOpen(false);
+                        }}
+                        onCancel={() => setOpen(false)}
+                      />
                     </DialogContent>
                   </Dialog>
                 </div>

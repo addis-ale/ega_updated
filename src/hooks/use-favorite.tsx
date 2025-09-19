@@ -11,8 +11,6 @@ import { FavoriteItemsOutput } from "@/app/modules/market/shop/types";
 export function useFavorite(productId: string) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-
-  // fetch favorites
   const { data: favoriteItems } = useSuspenseQuery(
     trpc.favoriteItems.getMany.queryOptions()
   );
@@ -20,8 +18,6 @@ export function useFavorite(productId: string) {
   const isFavorite = favoriteItems
     .map((item) => item.products.id)
     .some((pr) => pr === productId);
-
-  // mutation
   const toggleFavorite = useMutation(
     trpc.favoriteItems.toggle.mutationOptions({
       onMutate: async (variables) => {
