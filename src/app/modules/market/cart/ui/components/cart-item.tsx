@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useUpdateCartItem } from "@/hooks/use-update-cart-item";
+import { useRemoveFromCart } from "@/hooks/use-remove-from-cart";
 
 interface Props {
   images: {
@@ -61,7 +62,9 @@ export const CartItem = ({
       ? +salePriceAtAdd * quantity
       : undefined;
 
-  const { updateCartItem, isLoading } = useUpdateCartItem();
+  const { updateCartItem, isLoading: updating } = useUpdateCartItem();
+  const { removeFromCart, isLoading: removing } = useRemoveFromCart();
+  const isLoading = updating || removing;
   return (
     <div className="flex gap-4 flex-col md:flex-row">
       {/* image */}
@@ -183,7 +186,13 @@ export const CartItem = ({
               <span>Total:</span>
               {total && <span>{formatPriceETB(total)}</span>}
             </div>
-            <Button variant={"destructive"}>Remove</Button>
+            <Button
+              variant={"destructive"}
+              disabled={isLoading}
+              onClick={() => removeFromCart({ cartItemId })}
+            >
+              Remove
+            </Button>
           </div>
         </div>
       </div>

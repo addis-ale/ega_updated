@@ -189,7 +189,7 @@ export const cartItemsRoute = createTRPCRouter({
         });
       }
 
-      const item = groupedMap.get(row.id)!; // non-null since we just set it
+      const item = groupedMap.get(row.id)!;
       if (row.imageUrl) {
         item.product.images.push({
           url: row.imageUrl,
@@ -200,5 +200,29 @@ export const cartItemsRoute = createTRPCRouter({
 
     return Array.from(groupedMap.values());
   }),
-  //TODO: update and remove item from cart
+  remove: protectedProcedure
+    .input(
+      z.object({
+        cartItemId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const [userCart] = await db
+        .select()
+        .from(carts)
+        .where(eq(carts.userId, ctx.auth.user.id));
+      if (!userCart) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
+      }
+      const [removed] = await db
+        .delete(cartItems)
+        .where(
+          and(
+            eq(cartItems.id, input.cartItemId),
+            eq(cartItems.cartId, userCart.id)
+          )
+        )
+        .returning();
+      return removed;
+    }),
 });
