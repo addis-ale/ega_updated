@@ -29,7 +29,7 @@ interface Props {
 
 export const DiscountPercentagForm = ({ initialData, productId }: Props) => {
   const trpc = useTRPC();
-  console.log("discount", initialData.discountPercentage);
+
   const queryClient = useQueryClient();
   const [openEdit, setOpenEdit] = useState(false);
   const form = useForm<z.infer<typeof insertDiscountPercentageSchema>>({

@@ -120,7 +120,6 @@ export const CartItem = ({
                   <RentalDatePicker
                     defaultValue={date}
                     onConfirm={(selectedDate) => {
-                      console.log("SELECTED_DATE:", selectedDate);
                       if (!rentalPriceAtAdd) {
                         toast.error("This product is not available for rent");
                         return;

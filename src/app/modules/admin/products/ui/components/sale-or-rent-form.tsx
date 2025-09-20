@@ -38,7 +38,6 @@ export const RentOrSaleForm = ({ initialData, productId, options }: Props) => {
     },
   });
   const onSubmit = (data: z.infer<typeof insertRentOrSaleSchema>) => {
-    console.log("data", data);
     const { rentOrSale } = data;
     const type =
       rentOrSale === "0" ? "BOTH" : rentOrSale === "1" ? "SALE" : "RENT";

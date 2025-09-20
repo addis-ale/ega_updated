@@ -22,7 +22,6 @@ interface Props {
 }
 
 export const ProductImagesForm = ({ initialData, productId }: Props) => {
-  console.log("initial Data for images", initialData);
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [openEdit, setOpenEdit] = useState(false);
@@ -33,7 +32,6 @@ export const ProductImagesForm = ({ initialData, productId }: Props) => {
 
   const [coverImage, setCoverImage] = useState(selectedIndex);
   const onSubmit = (data: z.infer<typeof insertProductImagesSchema>) => {
-    console.log("data", data);
     createProductImage.mutate({
       imageUrl: data.imageUrl,
       productId: productId,
