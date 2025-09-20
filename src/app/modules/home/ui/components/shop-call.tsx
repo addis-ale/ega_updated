@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger); // ✅ Register scroll plugin
 
@@ -115,9 +116,11 @@ export const ShopCall = () => {
 
       {/* button */}
       <div className="shop_btn">
-        <Button className="text-xl px-5 py-7 md:p-8 font-semibold bg-green-500 cursor-pointer">
-          Explore Our Shop
-        </Button>
+        <Link href={"/shop"}>
+          <Button className="text-xl px-5 py-7 md:p-8 font-semibold bg-green-500 cursor-pointer">
+            Explore Our Shop
+          </Button>
+        </Link>
       </div>
     </div>
   );
