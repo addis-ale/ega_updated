@@ -166,14 +166,12 @@ export const CartItem = ({
               <Button
                 variant="outline"
                 onClick={() => {
-                  if (quantity > 1) {
-                    updateCartItem({
-                      cartItemId,
-                      quantity: quantity + 1,
-                    });
-                  }
+                  updateCartItem({
+                    cartItemId,
+                    quantity: quantity + 1,
+                  });
                 }}
-                disabled={isLoading || quantity <= 1}
+                disabled={isLoading}
               >
                 +
               </Button>
