@@ -34,6 +34,7 @@ export const CartView = () => {
             <CartItem
               key={item.id}
               name={item.product.name}
+              cartItemId={item.id}
               images={item.product.images.map((im) => ({
                 url: im.url,
                 alt: im.url,
@@ -41,8 +42,14 @@ export const CartView = () => {
               quantity={item.quantity}
               rentalPriceAtAdd={item.rentalPriceAtAdd ?? undefined}
               rentalDateDuration={item.rentalDateDuration ?? undefined}
-              rentalStartDate={item.rentalStartDate ?? undefined}
-              rentalEndDate={item.rentalEndDate ?? undefined}
+              rentalStartDate={
+                item.rentalStartDate
+                  ? new Date(item.rentalStartDate)
+                  : undefined
+              }
+              rentalEndDate={
+                item.rentalEndDate ? new Date(item.rentalEndDate) : undefined
+              }
               salePriceAtAdd={item.salePriceAtAdd ?? undefined}
             />
           ))}

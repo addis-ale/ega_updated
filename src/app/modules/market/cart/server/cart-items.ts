@@ -3,6 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { db } from "@/db";
 import { cartItems, carts, productImages, products } from "@/db/schema";
+import { TRPCError } from "@trpc/server";
 type CartItemImage = {
   url: string;
   isCover: boolean | null;
@@ -97,7 +98,45 @@ export const cartItemsRoute = createTRPCRouter({
 
       return item;
     }),
-
+  update: protectedProcedure
+    .input(
+      z.object({
+        cartItemId: z.string(),
+        quantity: z.number().optional(),
+        rentalStartDate: z
+          .string()
+          .transform((val) => new Date(val))
+          .optional(),
+        rentalEndDate: z
+          .string()
+          .transform((val) => new Date(val))
+          .optional(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { cartItemId, ...rest } = input;
+      const updateData: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(rest)) {
+        if (typeof value !== "undefined") {
+          updateData[key] = value;
+        }
+      }
+      const [userCart] = await db
+        .select()
+        .from(carts)
+        .where(eq(carts.userId, ctx.auth.user.id));
+      if (!userCart) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
+      }
+      const [updatedCartItem] = await db
+        .update(cartItems)
+        .set(updateData)
+        .where(
+          and(eq(cartItems.id, cartItemId), eq(cartItems.cartId, userCart.id))
+        )
+        .returning();
+      return updatedCartItem;
+    }),
   getMany: protectedProcedure.query(async ({ ctx }) => {
     // 1. Get the user's cart
     const [userCart] = await db
