@@ -1,13 +1,48 @@
+"use client";
+
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formatPriceETB } from "@/lib/utils";
-import Link from "next/link";
+import { ResponsiveDialogue } from "@/components/responsive-dialog";
+import { CheckoutForm } from "../../../shop/ui/components/checkout-form";
+import { useTRPC } from "@/trpc/client";
 interface Props {
   rentalTotal: number;
   purchaseTotal: number;
   total: number;
+  cartItemIds: string[];
 }
-export const CartSummary = ({ rentalTotal, purchaseTotal, total }: Props) => {
+export const CartSummary = ({
+  rentalTotal,
+  purchaseTotal,
+  total,
+  cartItemIds,
+}: Props) => {
+  const [open, onOpenChange] = useState(false);
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const sendInvoice = useMutation(
+    trpc.checkout.sendInvoice.mutationOptions({
+      onSuccess: async () => {
+        toast.success(
+          "Checkout successful! 🎉 Your invoice has been sent to Telegram."
+        );
+        await queryClient.invalidateQueries(
+          trpc.cartItems.getMany.queryOptions()
+        );
+        router.push("/cart/success");
+      },
+      onError: async (error) => {
+        toast.error(`Checkout failed: ${error.message}`);
+      },
+    })
+  );
   return (
     <div className="w-full md:col-span-2 self-start">
       <div className="sticky top-20">
@@ -39,12 +74,28 @@ export const CartSummary = ({ rentalTotal, purchaseTotal, total }: Props) => {
               </Button>
             </Link>
             <Button
-              size={"sm"}
-              variant={"default"}
-              className="bg-teal-500 hover:bg-teal-500 text-white"
+              className="bg-teal-500 hover:bg-teal-500/80 text-gray-300"
+              onClick={() => onOpenChange(true)}
             >
               Checkout
             </Button>
+            <ResponsiveDialogue
+              open={open}
+              onOpenChange={onOpenChange}
+              title="Enter Telegram Username"
+              description="Provide your Telegram username so the admin can contact you to checkout."
+            >
+              <CheckoutForm
+                onSuccess={(values) => {
+                  onOpenChange(false);
+                  sendInvoice.mutate({
+                    cartItemIds: cartItemIds,
+                    telegramUsername: values.telegramUsername,
+                  });
+                }}
+                onCancel={() => onOpenChange(false)}
+              />
+            </ResponsiveDialogue>
           </div>
         </div>
       </div>
