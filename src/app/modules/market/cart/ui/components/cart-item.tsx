@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { formatPriceETB } from "@/lib/utils";
 import { EditIcon } from "lucide-react";
