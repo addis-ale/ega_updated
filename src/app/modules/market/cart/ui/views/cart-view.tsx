@@ -39,6 +39,9 @@ export const CartView = () => {
   } else
     return (
       <div className="mt-16 max-w-6xl mx-auto">
+        <h1 className="text-center text-2xl md:text-3xl font-bold">
+          Items in Your Cart
+        </h1>
         <div className="flex flex-col gap-6 sm:grid sm:grid-cols-2 sm:items-start md:grid-cols-7">
           {/* left */}
           <div className="md:col-span-5 space-y-6">
