@@ -53,7 +53,7 @@ export const ProductCarousal = ({
             <Heart className="text-red-500" />
           </div>
           <a
-            href={`https://t.me/${process.env.ADMIN_USERNAME}`}
+            href={`https://t.me/${process.env.NEXT_PUBLIC_ADMIN_USERNAME}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 justify-between cursor-pointer border border-muted-foreground px-4 py-2 rounded-xl max-w-[230px]"
