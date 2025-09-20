@@ -1,4 +1,5 @@
 import { CartView } from "@/app/modules/market/cart/ui/views/cart-view";
+import LoadingState from "@/components/loading-state";
 import { auth } from "@/lib/auth";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -22,7 +23,7 @@ const CartPage = async () => {
         Items in Your Cart
       </h1>{" "}
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<p>loading</p>}>
+        <Suspense fallback={<LoadingState />}>
           <ErrorBoundary fallback={<p>Error</p>}>
             <CartView />
           </ErrorBoundary>

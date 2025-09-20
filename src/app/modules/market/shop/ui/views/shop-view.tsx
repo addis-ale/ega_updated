@@ -55,12 +55,3 @@ export const ShopView = () => {
     </div>
   );
 };
-export const ShopViewLoadingState = () => {
-  return (
-    <div className="mt-44">
-      <div className="flex items-center justify-center h-full w-full">
-        <div className=" text-2xl animate-pulse">Loading products...</div>
-      </div>
-    </div>
-  );
-};

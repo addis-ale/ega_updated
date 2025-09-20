@@ -6,6 +6,7 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import LoadingState from "@/components/loading-state";
 
 const FavoritePage = async () => {
   const session = await auth.api.getSession({
@@ -22,7 +23,7 @@ const FavoritePage = async () => {
         Your Favorites Products
       </h1>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<p>loading</p>}>
+        <Suspense fallback={<LoadingState />}>
           <ErrorBoundary fallback={<p>Error</p>}>
             <FavoriteView />
           </ErrorBoundary>

@@ -2,10 +2,8 @@ import { loadSearchParams } from "@/app/modules/admin/products/hooks/params";
 import { ProductFilter } from "@/app/modules/market/shop/ui/components/product-filter";
 import { ProductListHeader } from "@/app/modules/market/shop/ui/components/product-list-header";
 import { ShopHero } from "@/app/modules/market/shop/ui/components/shop-hero";
-import {
-  ShopView,
-  ShopViewLoadingState,
-} from "@/app/modules/market/shop/ui/views/shop-view";
+import { ShopView } from "@/app/modules/market/shop/ui/views/shop-view";
+import LoadingState from "@/components/loading-state";
 
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -40,7 +38,7 @@ const ShopPage = async ({ filter }: Props) => {
         <div className="md:w-2/3">
           <ProductListHeader />
           <HydrationBoundary state={dehydrate(queryClient)}>
-            <Suspense fallback={<ShopViewLoadingState />}>
+            <Suspense fallback={<LoadingState />}>
               <ErrorBoundary fallback={<p>error</p>}></ErrorBoundary>
               <ShopView />
             </Suspense>
