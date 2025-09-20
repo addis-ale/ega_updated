@@ -7,10 +7,10 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-interface Props {
+type PageProps = {
   searchParams: Promise<SearchParams>;
-}
-const Page = async ({ searchParams }: Props) => {
+};
+const Page = async ({ searchParams }: PageProps) => {
   const filters = await loadSearchParams(searchParams);
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(

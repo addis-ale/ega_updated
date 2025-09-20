@@ -1,3 +1,7 @@
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { SearchParams } from "nuqs/server";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { loadSearchParams } from "@/app/modules/admin/products/hooks/params";
 import { ProductFilter } from "@/app/modules/market/shop/ui/components/product-filter";
 import { ProductListHeader } from "@/app/modules/market/shop/ui/components/product-list-header";
@@ -5,18 +9,13 @@ import { ShopHero } from "@/app/modules/market/shop/ui/components/shop-hero";
 import { ShopView } from "@/app/modules/market/shop/ui/views/shop-view";
 import { ErrorState } from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
-
 import { getQueryClient, trpc } from "@/trpc/server";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { SearchParams } from "nuqs/server";
-import { Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-interface Props {
-  filter: Promise<SearchParams>;
-}
-const ShopPage = async ({ filter }: Props) => {
+type PageProps = {
+  searchParams: Promise<SearchParams>;
+};
+const ShopPage = async ({ searchParams }: PageProps) => {
   const { search, catIds, minPrice, maxPrice, rentOrSale, sort } =
-    await loadSearchParams(filter);
+    await loadSearchParams(searchParams);
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(
     trpc.productItems.getMany.queryOptions({
