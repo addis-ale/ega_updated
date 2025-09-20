@@ -158,9 +158,6 @@ export const ProductFilter = () => {
         </div>
 
         <div className="flex items-center justify-between mt-4">
-          <Button className="cursor-pointer w-fit p-3 md:hidden">
-            Apply filters
-          </Button>
           <Button
             className="cursor-pointer w-fit p-3 ml-auto"
             onClick={resetFilter}
