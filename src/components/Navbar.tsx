@@ -10,11 +10,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { navlinks } from "@/constants";
-import Container from "./container";
+import { Container } from "./container";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "./ui/button";
-const Navbar = () => {
+export const Navbar = () => {
   const router = useRouter();
   const { data: session } = authClient.useSession();
   const handleAuth = async () => {
@@ -92,5 +92,3 @@ const Navbar = () => {
     </div>
   );
 };
-
-export default Navbar;

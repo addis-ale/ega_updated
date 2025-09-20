@@ -1,6 +1,6 @@
 import { Facebook, Instagram, Linkedin, Send } from "lucide-react";
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <footer className="bg-muted mt-8 md:mt-12 lg:mt-15 py-8">
       <div className="px-4 md:px-8 lg:px-16 xl:px-32 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 items-center">
@@ -101,5 +101,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;
