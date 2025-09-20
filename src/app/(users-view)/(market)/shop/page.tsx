@@ -3,6 +3,7 @@ import { ProductFilter } from "@/app/modules/market/shop/ui/components/product-f
 import { ProductListHeader } from "@/app/modules/market/shop/ui/components/product-list-header";
 import { ShopHero } from "@/app/modules/market/shop/ui/components/shop-hero";
 import { ShopView } from "@/app/modules/market/shop/ui/views/shop-view";
+import { ErrorState } from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
 
 import { getQueryClient, trpc } from "@/trpc/server";
@@ -39,8 +40,9 @@ const ShopPage = async ({ filter }: Props) => {
           <ProductListHeader />
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Suspense fallback={<LoadingState />}>
-              <ErrorBoundary fallback={<p>error</p>}></ErrorBoundary>
-              <ShopView />
+              <ErrorBoundary fallback={<ErrorState />}>
+                <ShopView />
+              </ErrorBoundary>
             </Suspense>
           </HydrationBoundary>
         </div>

@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import LoadingState from "@/components/loading-state";
+import { ErrorState } from "@/components/error-state";
 
 const FavoritePage = async () => {
   const session = await auth.api.getSession({
@@ -24,7 +25,7 @@ const FavoritePage = async () => {
       </h1>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<LoadingState />}>
-          <ErrorBoundary fallback={<p>Error</p>}>
+          <ErrorBoundary fallback={<ErrorState />}>
             <FavoriteView />
           </ErrorBoundary>
         </Suspense>

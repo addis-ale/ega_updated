@@ -1,4 +1,5 @@
 import { CartView } from "@/app/modules/market/cart/ui/views/cart-view";
+import { ErrorState } from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
 import { auth } from "@/lib/auth";
 import { getQueryClient, trpc } from "@/trpc/server";
@@ -24,7 +25,7 @@ const CartPage = async () => {
       </h1>{" "}
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<LoadingState />}>
-          <ErrorBoundary fallback={<p>Error</p>}>
+          <ErrorBoundary fallback={<ErrorState />}>
             <CartView />
           </ErrorBoundary>
         </Suspense>

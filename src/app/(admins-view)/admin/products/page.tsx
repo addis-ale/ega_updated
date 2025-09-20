@@ -1,5 +1,6 @@
 import { loadSearchParams } from "@/app/modules/admin/products/hooks/params";
 import { ProductsView } from "@/app/modules/admin/products/ui/views/products-view";
+import { ErrorState } from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -19,7 +20,7 @@ const Page = async ({ searchParams }: Props) => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<LoadingState />}>
-        <ErrorBoundary fallback={<p>Error</p>}>
+        <ErrorBoundary fallback={<ErrorState />}>
           <ProductsView />
         </ErrorBoundary>
       </Suspense>
