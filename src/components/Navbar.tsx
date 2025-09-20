@@ -11,7 +11,25 @@ import {
 } from "@/components/ui/sheet";
 import { navlinks } from "@/constants";
 import Container from "./container";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { Button } from "./ui/button";
 const Navbar = () => {
+  const router = useRouter();
+  const { data: session } = authClient.useSession();
+  const handleAuth = async () => {
+    if (session) {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            router.push("/sign-in");
+          },
+        },
+      });
+    } else {
+      router.push("/sign-in");
+    }
+  };
   return (
     <div className="fixed top-0 left-0 right-0 w-full bg-background z-50">
       <Container>
@@ -46,6 +64,9 @@ const Navbar = () => {
                       </div>
                     </SheetClose>
                   ))}
+                  <Button onClick={handleAuth}>
+                    {session ? "Sign Out" : "Sign In"}
+                  </Button>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -62,26 +83,10 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-          </div>
-          {/* 
-          <SignedOut>
-            <Link
-              href={"/login"}
-              className="text-xs md:text-sm px-4 py-2 bg-blue-500 rounded-xl"
-            >
-              Login
-            </Link>
-          </SignedOut>
-          <SignedIn>
-            <Button
-              onClick={handleLogout}
-              variant={"destructive"}
-              className="cursor-pointer"
-            >
-              Sign Out
+            <Button onClick={handleAuth}>
+              {session ? "Sign Out" : "Sign In"}
             </Button>
-          </SignedIn>
-           */}
+          </div>
         </nav>
       </Container>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 import { z } from "zod";
-import { OctagonAlert } from "lucide-react";
+import { ArrowLeftCircle, OctagonAlert } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
@@ -127,6 +127,12 @@ export const SignUpView = () => {
             <form className="p-6 md:p-8" onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
+                  <Link href={"/"}>
+                    <Button variant="ghost" className="flex items-center gap-2">
+                      <ArrowLeftCircle className="w-5 h-5" />
+                      EGA
+                    </Button>
+                  </Link>
                   <h1 className="text-2xl font-bold">Let&apos;s get started</h1>
                   <p className="text-muted-foreground text-balance">
                     Create account
