@@ -56,29 +56,6 @@ export const ProductCard = ({ product }: Props) => {
     setOpen(true);
   };
 
-  // const handleDateSet = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.stopPropagation();
-
-  //   if (!product.products.rentalPrice) {
-  //     toast.error("This product is not available for rent");
-  //     return;
-  //   }
-  //   if (!date?.from || !date?.to) {
-  //     toast.error("Please select a rental start and end date");
-  //     return;
-  //   }
-
-  //   addToCart({
-  //     productId: product.products.id,
-  //     actionType: "RENT",
-  //     rentalPriceAtAdd: product.products.rentalPrice.toString(),
-  //     rentalStartDate: date.from.toISOString(),
-  //     rentalEndDate: date.to.toISOString(),
-  //   });
-
-  //   setOpen(false);
-  // };
-
   return (
     <div>
       {product && (

@@ -38,6 +38,7 @@ export const ProductDetailView = ({ productId }: Props) => {
           {/* description */}
           <div className="flex-1">
             <ProductDetailDescription
+              productId={productId}
               productDesc={productItem?.description ?? ""}
               productName={productItem?.name ?? ""}
               sellingPrice={
@@ -51,19 +52,6 @@ export const ProductDetailView = ({ productId }: Props) => {
             />
           </div>
         </div>
-        {/* TODO: Related Products */}
-        {/* <div>
-          <div className="flex flex-col gap-8 md:gap-12">
-            <h1 className="text-4xl lg:text-5xl">Related products</h1>
-            <div className="grid grid-cols-6 gap-4">
-              {productLists.map((list) => (
-                <div key={list.productId} className="col-span-3 md:col-span-2 ">
-                  <ProductCard product={list} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );
