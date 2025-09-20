@@ -3,10 +3,13 @@ import { useTRPC } from "@/trpc/client";
 import { ProductCarousal } from "../components/product-carousal";
 import { ProductDetailDescription } from "../components/product-detail-description";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { authClient } from "@/lib/auth-client";
+import { ProductDetailDescriptionGuest } from "../components/product-detail-description-guest";
 interface Props {
   productId: string;
 }
 export const ProductDetailView = ({ productId }: Props) => {
+  const { data: session } = authClient.useSession();
   const trpc = useTRPC();
   const { data: productItem } = useSuspenseQuery(
     trpc.productItems.getOne.queryOptions({
@@ -37,19 +40,38 @@ export const ProductDetailView = ({ productId }: Props) => {
           </div>
           {/* description */}
           <div className="flex-1">
-            <ProductDetailDescription
-              productId={productId}
-              productDesc={productItem?.description ?? ""}
-              productName={productItem?.name ?? ""}
-              sellingPrice={
-                productItem?.sellingPrice
-                  ? +productItem.sellingPrice
-                  : undefined
-              }
-              rentalPrice={
-                productItem?.rentalPrice ? +productItem.rentalPrice : undefined
-              }
-            />
+            {session ? (
+              <ProductDetailDescription
+                productId={productId}
+                productDesc={productItem?.description ?? ""}
+                productName={productItem?.name ?? ""}
+                sellingPrice={
+                  productItem?.sellingPrice
+                    ? +productItem.sellingPrice
+                    : undefined
+                }
+                rentalPrice={
+                  productItem?.rentalPrice
+                    ? +productItem.rentalPrice
+                    : undefined
+                }
+              />
+            ) : (
+              <ProductDetailDescriptionGuest
+                productDesc={productItem?.description ?? ""}
+                productName={productItem?.name ?? ""}
+                sellingPrice={
+                  productItem?.sellingPrice
+                    ? +productItem.sellingPrice
+                    : undefined
+                }
+                rentalPrice={
+                  productItem?.rentalPrice
+                    ? +productItem.rentalPrice
+                    : undefined
+                }
+              />
+            )}
           </div>
         </div>
       </div>
