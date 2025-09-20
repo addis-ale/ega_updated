@@ -10,6 +10,7 @@ export const CartView = () => {
   const { data: cartItems } = useSuspenseQuery(
     trpc.cartItems.getMany.queryOptions()
   );
+  const cartItemIds = cartItems.map((item) => item.id);
   const purchasedItems = cartItems.filter((item) =>
     Boolean(item.salePriceAtAdd)
   );
@@ -72,6 +73,7 @@ export const CartView = () => {
             total={total}
             purchaseTotal={purchaseTotal}
             rentalTotal={rentalTotal}
+            cartItemIds={cartItemIds}
           />
         </div>
       </div>

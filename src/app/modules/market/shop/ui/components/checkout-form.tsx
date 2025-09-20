@@ -12,10 +12,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-interface Props {
-  onSuccess?: () => void;
-  onCancel?: () => void;
-}
 const formSchema = z.object({
   telegramUsername: z
     .string()
@@ -24,6 +20,10 @@ const formSchema = z.object({
       message: "Telegram username must start with '@'",
     }),
 });
+interface Props {
+  onSuccess?: (values: z.infer<typeof formSchema>) => void;
+  onCancel?: () => void;
+}
 export const CheckoutForm = ({ onCancel, onSuccess }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,9 +33,7 @@ export const CheckoutForm = ({ onCancel, onSuccess }: Props) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    //TODO: send the invoice to telegram bot
-    console.log(values);
-    if (onSuccess) onSuccess();
+    if (onSuccess) onSuccess(values);
   };
   return (
     <Form {...form}>

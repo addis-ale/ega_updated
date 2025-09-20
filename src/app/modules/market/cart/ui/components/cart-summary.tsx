@@ -1,19 +1,48 @@
 "use client";
 
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formatPriceETB } from "@/lib/utils";
-import Link from "next/link";
 import { ResponsiveDialogue } from "@/components/responsive-dialog";
-import { useState } from "react";
 import { CheckoutForm } from "../../../shop/ui/components/checkout-form";
+import { useTRPC } from "@/trpc/client";
 interface Props {
   rentalTotal: number;
   purchaseTotal: number;
   total: number;
+  cartItemIds: string[];
 }
-export const CartSummary = ({ rentalTotal, purchaseTotal, total }: Props) => {
+export const CartSummary = ({
+  rentalTotal,
+  purchaseTotal,
+  total,
+  cartItemIds,
+}: Props) => {
   const [open, onOpenChange] = useState(false);
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const sendInvoice = useMutation(
+    trpc.checkout.sendInvoice.mutationOptions({
+      onSuccess: async () => {
+        toast.success(
+          "Checkout successful! 🎉 Your invoice has been sent to Telegram."
+        );
+        await queryClient.invalidateQueries(
+          trpc.cartItems.getMany.queryOptions()
+        );
+        router.push("/cart/success");
+      },
+      onError: async (error) => {
+        toast.error(`Checkout failed: ${error.message}`);
+      },
+    })
+  );
   return (
     <div className="w-full md:col-span-2 self-start">
       <div className="sticky top-20">
@@ -57,7 +86,13 @@ export const CartSummary = ({ rentalTotal, purchaseTotal, total }: Props) => {
               description="Provide your Telegram username so the admin can contact you to checkout."
             >
               <CheckoutForm
-                onSuccess={() => onOpenChange(false)}
+                onSuccess={(values) => {
+                  onOpenChange(false);
+                  sendInvoice.mutate({
+                    cartItemIds: cartItemIds,
+                    telegramUsername: values.telegramUsername,
+                  });
+                }}
                 onCancel={() => onOpenChange(false)}
               />
             </ResponsiveDialogue>
