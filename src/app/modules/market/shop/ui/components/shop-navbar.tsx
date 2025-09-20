@@ -17,7 +17,7 @@ export const ShopNavbar = () => {
         <Link href={"/shop/cart"} className="relative">
           <ShoppingCart />
           <div className=" absolute -top-5 -right-3 flex items-center justify-center p-2 w-6 h-6 rounded-full border border-muted text-sm ">
-            {cartItems?.length}
+            {cartItems?.length ?? 0}
           </div>
         </Link>
       </div>

@@ -5,8 +5,11 @@ import { useTRPC } from "@/trpc/client";
 import { ProductCard } from "../components/product-card";
 import { useProductsFilter } from "@/hooks/use-products-filter";
 import { EmptyState } from "@/components/empty-state";
+import { authClient } from "@/lib/auth-client";
+import ProductCardGuest from "../components/product-card-guest";
 
 export const ShopView = () => {
+  const { data: session } = authClient.useSession();
   const trpc = useTRPC();
   const [{ search, catIds, minPrice, maxPrice, rentOrSale, sort }] =
     useProductsFilter();
@@ -40,7 +43,11 @@ export const ShopView = () => {
         <div className="grid grid-cols-6 gap-4">
           {productItems.map((item) => (
             <div key={item.products.id} className="col-span-3 md:col-span-2 ">
-              <ProductCard product={item} />
+              {session ? (
+                <ProductCard product={item} />
+              ) : (
+                <ProductCardGuest product={item} />
+              )}
             </div>
           ))}
         </div>
