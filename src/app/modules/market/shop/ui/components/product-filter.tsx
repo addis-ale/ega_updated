@@ -28,8 +28,6 @@ export const ProductFilter = () => {
     handleInputChange,
     handleSliderChange,
   } = useSliderWithInput({ minValue, maxValue, initialValue });
-  //Input values here
-  console.log(inputValues);
   const trpc = useTRPC();
   const { data: gameCategory } = useQuery(
     trpc.productCategories.getMany.queryOptions()
@@ -40,6 +38,16 @@ export const ProductFilter = () => {
     } else {
       setFilter({ catIds: [...catIds, id] });
     }
+  };
+  const resetFilter = () => {
+    setFilter({
+      search: "",
+      catIds: [],
+      minPrice: null,
+      maxPrice: null,
+      rentOrSale: "BOTH",
+      sort: "NEWEST",
+    });
   };
   return (
     <div className="px-4 py-2 sticky top-44">
@@ -153,7 +161,10 @@ export const ProductFilter = () => {
           <Button className="cursor-pointer w-fit p-3 md:hidden">
             Apply filters
           </Button>
-          <Button className="cursor-pointer w-fit p-3 ml-auto">
+          <Button
+            className="cursor-pointer w-fit p-3 ml-auto"
+            onClick={resetFilter}
+          >
             Reset all
           </Button>
         </div>
