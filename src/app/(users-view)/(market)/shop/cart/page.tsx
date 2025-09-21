@@ -3,7 +3,6 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ErrorBoundary } from "react-error-boundary";
-import { CartView } from "@/app/modules/market/cart/ui/views/cart-view";
 import { ErrorState } from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
 import { auth } from "@/lib/auth";
