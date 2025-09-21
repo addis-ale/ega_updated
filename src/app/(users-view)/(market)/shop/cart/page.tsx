@@ -1,7 +1,7 @@
+import { Suspense } from "react";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { CartView } from "@/app/modules/market/cart/ui/views/cart-view";
 import { ErrorState } from "@/components/error-state";
@@ -22,7 +22,7 @@ const CartPage = async () => {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<LoadingState />}>
         <ErrorBoundary fallback={<ErrorState />}>
-          <CartView />
+          <div>cart page</div>
         </ErrorBoundary>
       </Suspense>
     </HydrationBoundary>
