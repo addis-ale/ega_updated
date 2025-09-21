@@ -29,7 +29,7 @@ export const CartView = () => {
   const total = purchaseTotal + rentalTotal;
   if (cartItems.length === 0) {
     return (
-      <div className="mt-16">
+      <div className="mt-44">
         <EmptyState
           title="Your cart is empty"
           description="Looks like you haven't added any items yet. Browse our products and add your favorites to get started!"
@@ -38,8 +38,8 @@ export const CartView = () => {
     );
   } else
     return (
-      <div className="mt-16 max-w-6xl mx-auto">
-        <h1 className="text-center text-2xl md:text-3xl font-bold">
+      <div className="mt-54 max-w-6xl mx-auto">
+        <h1 className="text-center text-2xl md:text-3xl font-bold mb-8">
           Items in Your Cart
         </h1>
         <div className="flex flex-col gap-6 sm:grid sm:grid-cols-2 sm:items-start md:grid-cols-7">
