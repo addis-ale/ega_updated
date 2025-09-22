@@ -2,6 +2,7 @@
 import {
   DEFAULT_MAX_PRICE,
   DEFAULT_MIN_PRICE,
+  gameCategory,
   purchaseType,
 } from "@/constants";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,8 +12,7 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
-import { useTRPC } from "@/trpc/client";
+
 import { useProductsFilter } from "@/hooks/use-products-filter";
 
 export const ProductFilter = () => {
@@ -28,10 +28,10 @@ export const ProductFilter = () => {
     handleInputChange,
     handleSliderChange,
   } = useSliderWithInput({ minValue, maxValue, initialValue });
-  const trpc = useTRPC();
-  const { data: gameCategory } = useQuery(
-    trpc.productCategories.getMany.queryOptions()
-  );
+  //const trpc = useTRPC();
+  // const { data: gameCategory } = useQuery(
+  //   trpc.productCategories.getMany.queryOptions()
+  // );
   const toggleCategory = (id: string) => {
     if (catIds.includes(id)) {
       setFilter({ catIds: catIds.filter((cat) => cat !== id) });
@@ -67,7 +67,7 @@ export const ProductFilter = () => {
                   onCheckedChange={() => toggleCategory(cat.id)}
                 />
                 <label htmlFor={cat.id} className="cursor-pointer text-sm">
-                  {cat.name}
+                  cat
                 </label>
               </div>
             ))}
