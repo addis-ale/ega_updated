@@ -3,7 +3,7 @@ import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { loadSearchParams } from "@/app/modules/admin/products/hooks/params";
-//import { ProductFilter } from "@/app/modules/market/shop/ui/components/product-filter";
+import { ProductFilter } from "@/app/modules/market/shop/ui/components/product-filter";
 //import { ProductListHeader } from "@/app/modules/market/shop/ui/components/product-list-header";
 //import { ShopHero } from "@/app/modules/market/shop/ui/components/shop-hero";
 import { ShopView } from "@/app/modules/market/shop/ui/views/shop-view";
@@ -30,6 +30,9 @@ const ShopPage = async ({ searchParams }: PageProps) => {
     <>
       <ShopHero />
       <div className="flex md:w-full justify-between mt-8 md:mt-12">
+        <div className="md:w-1/3 hidden md:block mr-2">
+          <ProductFilter />
+        </div>
         <div className="md:w-2/3">
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Suspense fallback={<p>loading</p>}>
