@@ -1,11 +1,12 @@
+import { Suspense } from "react";
 import { ShopNavbar } from "@/app/modules/market/shop/ui/components/shop-navbar";
 
 const ShopLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
-      <div>
+      <Suspense fallback={<div>Loading navbar...</div>}>
         <ShopNavbar />
-      </div>
+      </Suspense>
       <main>{children}</main>
     </div>
   );
