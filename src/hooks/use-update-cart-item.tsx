@@ -63,15 +63,13 @@ export const useUpdateCartItem = () => {
         }
         toast.error(err.message);
       },
-      onSettled: () => {
+      onSettled: async () => {
         // Always refetch after mutation
-        queryClient.invalidateQueries(trpc.cartItems.getMany.queryOptions());
-      },
-      onSuccess: async () => {
         await queryClient.invalidateQueries(
           trpc.cartItems.getMany.queryOptions()
         );
-
+      },
+      onSuccess: async () => {
         toast.success("Cart updated");
       },
     })

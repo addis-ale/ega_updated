@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { db } from "@/db";
 import { cartItems, carts, productImages, products } from "@/db/schema";
@@ -165,7 +165,8 @@ export const cartItemsRoute = createTRPCRouter({
       .from(cartItems)
       .innerJoin(products, eq(cartItems.productId, products.id))
       .leftJoin(productImages, eq(products.id, productImages.productId))
-      .where(eq(cartItems.cartId, userCart.id));
+      .where(eq(cartItems.cartId, userCart.id))
+      .orderBy(desc(cartItems.productId));
 
     // 3. Group using Map with correct typing
     const groupedMap = new Map<string, CartItemWithProduct>();

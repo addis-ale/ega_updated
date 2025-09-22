@@ -16,33 +16,38 @@ interface Props {
   purchaseTotal: number;
   total: number;
   cartItemIds: string[];
+  setSending: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const CartSummary = ({
   rentalTotal,
   purchaseTotal,
   total,
   cartItemIds,
+  setSending,
 }: Props) => {
   const [open, onOpenChange] = useState(false);
   const trpc = useTRPC();
-  const queryClient = useQueryClient();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const sendInvoice = useMutation(
     trpc.checkout.sendInvoice.mutationOptions({
       onSuccess: async () => {
         toast.success(
           "Checkout successful! 🎉 Your invoice has been sent to Telegram."
         );
+        router.push("/shop/cart/success");
         await queryClient.invalidateQueries(
           trpc.cartItems.getMany.queryOptions()
         );
-        router.push("/cart/success");
       },
       onError: async (error) => {
         toast.error(`Checkout failed: ${error.message}`);
       },
     })
   );
+  if (sendInvoice.isPending) {
+    setSending(true);
+  }
   return (
     <div className="w-full md:col-span-2 self-start">
       <div className="sticky top-20">
