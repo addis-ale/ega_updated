@@ -13,10 +13,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
+import { useProductsFilter } from "@/hooks/use-products-filter";
 
 export const ProductFilter = () => {
   const minValue = DEFAULT_MIN_PRICE;
   const maxValue = DEFAULT_MAX_PRICE;
+  const [{ catIds, rentOrSale }, setFilter] = useProductsFilter();
   //TODO: do the initial min and max by the products min and max from db
   const initialValue = [DEFAULT_MIN_PRICE, DEFAULT_MAX_PRICE];
   const {
@@ -30,7 +32,23 @@ export const ProductFilter = () => {
   const { data: gameCategory } = useQuery(
     trpc.productCategories.getMany.queryOptions()
   );
-
+  const toggleCategory = (id: string) => {
+    if (catIds.includes(id)) {
+      setFilter({ catIds: catIds.filter((cat) => cat !== id) });
+    } else {
+      setFilter({ catIds: [...catIds, id] });
+    }
+  };
+  const resetFilter = () => {
+    setFilter({
+      search: "",
+      catIds: [],
+      minPrice: null,
+      maxPrice: null,
+      rentOrSale: "BOTH",
+      sort: "NEWEST",
+    });
+  };
   return (
     <div className="px-4 py-2 sticky top-44">
       <div className="flex flex-col gap-6">
@@ -43,7 +61,11 @@ export const ProductFilter = () => {
                 key={cat.id}
                 className="flex gap-2 items-center text-muted-foreground "
               >
-                <Checkbox id={cat.id} />
+                <Checkbox
+                  id={cat.id}
+                  checked={catIds.includes(cat.id)}
+                  onCheckedChange={() => toggleCategory(cat.id)}
+                />
                 <label htmlFor={cat.id} className="cursor-pointer text-sm">
                   {cat.name}
                 </label>
@@ -64,6 +86,7 @@ export const ProductFilter = () => {
                 value={inputValues[0]}
                 onChange={(e) => {
                   handleInputChange(e, 0);
+                  setFilter({ minPrice: +e.target.value });
                 }}
                 onBlur={() => validateAndUpdateValue(inputValues[0], 0)}
                 onKeyDown={(e) => {
@@ -80,6 +103,7 @@ export const ProductFilter = () => {
                 value={sliderValue}
                 onValueChange={(val) => {
                   handleSliderChange(val);
+                  setFilter({ minPrice: val[0], maxPrice: val[1] });
                 }}
                 min={minValue}
                 max={maxValue}
@@ -94,6 +118,7 @@ export const ProductFilter = () => {
                 value={inputValues[1]}
                 onChange={(e) => {
                   handleInputChange(e, 1);
+                  setFilter({ maxPrice: +e.target.value });
                 }}
                 onBlur={() => validateAndUpdateValue(inputValues[1], 1)}
                 onKeyDown={(e) => {
@@ -111,7 +136,12 @@ export const ProductFilter = () => {
         <div className="flex flex-col gap-4">
           <div className="text-2xl font-semibold">Purchase Type</div>
           <div className="flex flex-col gap-2">
-            <RadioGroup>
+            <RadioGroup
+              value={rentOrSale}
+              onValueChange={(value) =>
+                setFilter({ rentOrSale: value as "RENT" | "BUY" | "BOTH" })
+              }
+            >
               {purchaseType.map((type) => (
                 <div key={type} className="flex items-center gap-3">
                   <RadioGroupItem value={type} id={type} />
@@ -128,7 +158,10 @@ export const ProductFilter = () => {
         </div>
 
         <div className="flex items-center justify-between mt-4">
-          <Button className="cursor-pointer w-fit p-3 ml-auto">
+          <Button
+            className="cursor-pointer w-fit p-3 ml-auto"
+            onClick={resetFilter}
+          >
             Reset all
           </Button>
         </div>
