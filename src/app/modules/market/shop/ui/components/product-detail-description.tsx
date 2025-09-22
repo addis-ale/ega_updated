@@ -1,3 +1,5 @@
+"use client"
+
 import { Calendar, Heart, Send, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn, formatPriceETB } from "@/lib/utils";
