@@ -11,12 +11,12 @@ import { ErrorState } from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
 
 import { getQueryClient, trpc } from "@/trpc/server";
-interface Props {
-  filter: Promise<SearchParams>;
-}
-const ShopPage = async ({ filter }: Props) => {
+type PageProps = {
+  searchParams: Promise<SearchParams>;
+};
+const ShopPage = async ({ searchParams }: PageProps) => {
   const { search, catIds, minPrice, maxPrice, rentOrSale, sort } =
-    await loadSearchParams(filter);
+    await loadSearchParams(searchParams);
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(
     trpc.productItems.getMany.queryOptions({
