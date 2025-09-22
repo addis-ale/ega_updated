@@ -13,7 +13,7 @@ interface Props {
   product: ProductLists[number];
 }
 
-const ProductCardGuest = ({ product }: Props) => {
+export const ProductCardGuest = ({ product }: Props) => {
   const router = useRouter();
   const handleAction = (e: React.MouseEvent) => {
     e.stopPropagation();

@@ -41,21 +41,7 @@ export const ProductDetailView = ({ productId }: Props) => {
           {/* description */}
           <div className="flex-1">
             {session ? (
-              <ProductDetailDescription
-                productId={productId}
-                productDesc={productItem?.description ?? ""}
-                productName={productItem?.name ?? ""}
-                sellingPrice={
-                  productItem?.sellingPrice
-                    ? +productItem.sellingPrice
-                    : undefined
-                }
-                rentalPrice={
-                  productItem?.rentalPrice
-                    ? +productItem.rentalPrice
-                    : undefined
-                }
-              />
+              <ProductDetailDescription />
             ) : (
               <ProductDetailDescriptionGuest
                 productDesc={productItem?.description ?? ""}

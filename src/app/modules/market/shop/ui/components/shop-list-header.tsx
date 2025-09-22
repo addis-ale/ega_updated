@@ -8,16 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { sortBy, sortValueType } from "@/constants";
-import { useProductsFilter } from "@/hooks/use-products-filter";
+import { sortBy } from "@/constants";
 
 export const ShopListHeader = () => {
-  const [{ sort }, setFilter] = useProductsFilter();
   return (
-    <Select
-      value={sort}
-      onValueChange={(value) => setFilter({ sort: value as sortValueType })}
-    >
+    <Select value={"NEWEST"} onValueChange={() => {}}>
       <SelectTrigger className="w-[200px]">
         <SelectValue placeholder="Sort by:" />
       </SelectTrigger>

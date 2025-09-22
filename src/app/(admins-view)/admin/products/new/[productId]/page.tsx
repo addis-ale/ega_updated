@@ -1,11 +1,9 @@
-import { CreateNewProductSetupView } from "@/app/modules/admin/products/ui/views/create-new-product-setup-view";
-import { BackLink } from "@/components/back-link";
-import { ErrorState } from "@/components/error-state";
-import LoadingState from "@/components/loading-state";
-import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { CreateNewProductSetupView } from "@/app/modules/admin/products/ui/views/create-new-product-setup-view";
+import { BackLink } from "@/components/back-link";
+import { getQueryClient, trpc } from "@/trpc/server";
 interface Props {
   params: Promise<{ productId: string }>;
 }
@@ -30,8 +28,8 @@ const Page = async ({ params }: Props) => {
     <>
       <BackLink href="/admin/products" label="Back to Products" />
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<LoadingState />}>
-          <ErrorBoundary fallback={<ErrorState />}>
+        <Suspense fallback={<p>loading</p>}>
+          <ErrorBoundary fallback={<p>Error</p>}>
             <CreateNewProductSetupView productId={productId} />
           </ErrorBoundary>
         </Suspense>

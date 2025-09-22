@@ -3,7 +3,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { ProductCard } from "../components/product-card";
-import { useProductsFilter } from "@/hooks/use-products-filter";
 import { EmptyState } from "@/components/empty-state";
 import { authClient } from "@/lib/auth-client";
 import ProductCardGuest from "../components/product-card-guest";
@@ -11,17 +10,8 @@ import ProductCardGuest from "../components/product-card-guest";
 export const ShopView = () => {
   const { data: session } = authClient.useSession();
   const trpc = useTRPC();
-  const [{ search, catIds, minPrice, maxPrice, rentOrSale, sort }] =
-    useProductsFilter();
   const { data: products } = useSuspenseQuery(
-    trpc.productItems.getMany.queryOptions({
-      search,
-      categoryIds: catIds,
-      minPrice,
-      maxPrice,
-      type: rentOrSale,
-      sort,
-    })
+    trpc.productItems.getMany.queryOptions({})
   );
   const { items: productItems, totalItems } = products;
 
