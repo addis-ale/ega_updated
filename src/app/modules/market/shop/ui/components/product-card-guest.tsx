@@ -98,5 +98,3 @@ export const ProductCardGuest = ({ product }: Props) => {
     </div>
   );
 };
-
-export default ProductCardGuest;
