@@ -1,4 +1,5 @@
-// app/(users-view)/(market)/shop/cart/page.tsx
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -6,9 +7,15 @@ import { CartView } from "@/app/modules/market/cart/ui/views/cart-view";
 import LoadingState from "@/components/loading-state";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { ErrorState } from "@/components/error-state";
+import { auth } from "@/lib/auth";
 
-export const dynamic = "force-dynamic";
 const CartPage = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    redirect("/sign-in");
+  }
   const queryClient = getQueryClient();
 
   // Prefetch cart items for hydration (runs on the server per request)
