@@ -1,3 +1,4 @@
+"use client";
 import { MobileFilter } from "./mobile-filter";
 import { ShopListHeader } from "./shop-list-header";
 

@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { loadSearchParams } from "@/app/modules/admin/products/hooks/params";
 import { ProductFilter } from "@/app/modules/market/shop/ui/components/product-filter";
-//import { ProductListHeader } from "@/app/modules/market/shop/ui/components/product-list-header";
+import { ProductListHeader } from "@/app/modules/market/shop/ui/components/product-list-header";
 //import { ShopHero } from "@/app/modules/market/shop/ui/components/shop-hero";
 import { ShopView } from "@/app/modules/market/shop/ui/views/shop-view";
 import { getQueryClient, trpc } from "@/trpc/server";
@@ -33,7 +33,9 @@ const ShopPage = async ({ searchParams }: PageProps) => {
         <div className="md:w-1/3 hidden md:block mr-2">
           <ProductFilter />
         </div>
+
         <div className="md:w-2/3">
+          <ProductListHeader />
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Suspense fallback={<p>loading</p>}>
               <ErrorBoundary fallback={<p>error</p>}>
