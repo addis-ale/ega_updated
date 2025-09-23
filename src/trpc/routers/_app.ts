@@ -7,6 +7,7 @@ import { favoriteRoute } from "@/app/modules/market/favorite/server/fav-items";
 import { cartItemsRoute } from "@/app/modules/market/cart/server/cart-items";
 import { checkoutRoute } from "@/app/modules/market/shop/server/cart-checkout";
 import { blogRoutes } from "@/app/modules/admin/blogs/server/blogs";
+import { blogPostsRoute } from "@/app/modules/blog/server/blog-posts";
 export const appRouter = createTRPCRouter({
   products: productRoute,
   productImages: productImagesRoute,
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   cartItems: cartItemsRoute,
   checkout: checkoutRoute,
   blogs: blogRoutes,
+  blogPosts: blogPostsRoute,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

@@ -19,12 +19,12 @@ const navlinks = [
   },
   {
     label: "Blog",
-    href: "/shop",
+    href: "/blogs",
     icon: FileText,
   },
   {
     label: "Events",
-    href: "/shop",
+    href: "/events",
     icon: Calendar,
   },
 ];
