@@ -52,17 +52,17 @@ const adminRoute = [
     ],
   },
   {
-    href: "/admin/blog",
+    href: "/admin/blogs",
     label: "Blog",
     icon: MdOutlineArticle,
     children: [
       {
-        href: "/admin/blog",
+        href: "/admin/blogs",
         label: "All Posts",
         icon: MdList,
       },
       {
-        href: "/admin/blog/new",
+        href: "/admin/blogs/new",
         label: "Add Post",
         icon: MdAdd,
       },

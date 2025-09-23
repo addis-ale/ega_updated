@@ -29,7 +29,6 @@ interface Props {
 }
 
 export const BlogContentForm = ({ initialData, blogId }: Props) => {
-  console.log("INITIAL_DATA", initialData);
   const [openEdit, setOpenEdit] = useState(false);
   const queryClient = useQueryClient();
   const trpc = useTRPC();

@@ -24,6 +24,7 @@ export const blogRoutes = createTRPCRouter({
         blogId: z.string(),
         title: z.string().optional(),
         content: z.string().optional(),
+        isPublished: z.boolean().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -64,5 +65,26 @@ export const blogRoutes = createTRPCRouter({
         throw new TRPCError({ code: "NOT_FOUND", message: "Blog Not Found!" });
       }
       return existingBlog;
+    }),
+  remove: protectedProcedure
+    .input(
+      z.object({
+        blogId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const [removedBlog] = await db
+        .delete(blogs)
+        .where(
+          and(eq(blogs.id, input.blogId), eq(blogs.userId, ctx.auth.user.id))
+        )
+        .returning();
+      if (!removedBlog) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Blog not found to delete!",
+        });
+      }
+      return removedBlog;
     }),
 });

@@ -59,7 +59,7 @@ export const BlogTitleForm = ({ initialData, blogId }: Props) => {
 
         toast.success("New Blog Created!");
         setOpenEdit(false);
-        router.push(`/admin/blog/new/${data.id}`);
+        router.push(`/admin/blogs/new/${data.id}`);
       },
       onError: (error) => {
         toast.message(error.message);
