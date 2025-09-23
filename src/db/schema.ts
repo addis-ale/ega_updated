@@ -187,3 +187,17 @@ export const favoriteItems = pgTable(
   },
   (table) => [unique().on(table.favoriteId, table.productId)]
 );
+export const blogs = pgTable("blogs", {
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .$default(() => nanoid()),
+  title: text("blog_title").notNull(),
+  content: text("blog_content"),
+  isPublished: boolean("is_published").default(false),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
