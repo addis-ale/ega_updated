@@ -6,6 +6,7 @@ import { EventTitleForm } from "../components/event-title-form";
 import { EventDescriptionForm } from "../components/event-description-form";
 import { EventLocationForm } from "../components/event-location-form copy";
 import { EventCoverImageForm } from "../components/event-cover-img-form";
+import { EventDateForm } from "../components/event-date-form";
 
 interface Props {
   eventId: string;
@@ -38,8 +39,11 @@ export const CreateEventSetupView = ({ eventId }: Props) => {
   const initialCoverImgData = {
     coverImg: event.coverImg ?? "",
   };
+  const initialEventDateData = {
+    eventDate: event.eventDate ?? "",
+  };
   return (
-    <div className="p-6 flex flex-col gap-4">
+    <div className="p-6 pb-8 flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-2 items-end w-fit">
           <h1 className="text-2xl">Event Setup</h1>
@@ -65,6 +69,7 @@ export const CreateEventSetupView = ({ eventId }: Props) => {
             eventId={eventId}
           />
           <EventLocationForm initialData={initalLocData} eventId={eventId} />
+          <EventDateForm initialData={initialEventDateData} eventId={eventId} />
         </div>
         <div className="flex flex-col space-y-4">
           <EventCoverImageForm

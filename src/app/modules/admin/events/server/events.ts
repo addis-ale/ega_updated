@@ -29,7 +29,10 @@ export const eventsRoute = createTRPCRouter({
         description: z.string().optional(),
         coverImg: z.string().optional(),
         location: z.string().optional(),
-        eventDate: z.string().optional(),
+        eventDate: z
+          .string()
+          .transform((val) => new Date(val))
+          .optional(),
         status: z.enum(["UPCOMING", "ENDED", "ACTIVE"]).optional(),
         isPosted: z.boolean().optional(),
       })
