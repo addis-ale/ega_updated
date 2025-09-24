@@ -27,10 +27,10 @@ interface Props {
   initialData?: {
     title: string;
   };
-  productId?: string;
+  eventId?: string;
 }
-export const EventTitleForm = ({ initialData, productId }: Props) => {
-  const isEdit = !!initialData && !!productId;
+export const EventTitleForm = ({ initialData, eventId }: Props) => {
+  const isEdit = !!initialData && !!eventId;
   const [openEdit, setOpenEdit] = useState(false);
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -41,30 +41,30 @@ export const EventTitleForm = ({ initialData, productId }: Props) => {
       title: initialData?.title ?? "",
     },
   });
-  const createProduct = useMutation(
-    trpc.products.create.mutationOptions({
+  const createEvent = useMutation(
+    trpc.events.create.mutationOptions({
       onSuccess: async (data) => {
         // TODO: invalidate some queries get Many
-        toast.success("Product name created!");
-        router.push(`/admin/products/new/${data.id}`);
+        toast.success("Event title created!");
+        router.push(`/admin/events/new/${data.id}`);
       },
       onError: (error) => {
         toast.error(error.message);
       },
     })
   );
-  const updateProductName = useMutation(
-    trpc.products.update.mutationOptions({
+  const updateEvent = useMutation(
+    trpc.events.update.mutationOptions({
       onSuccess: async () => {
-        //TODO: invalidate queries getMany
-        if (productId) {
-          await queryClient.invalidateQueries(
-            trpc.products.getOne.queryOptions({
-              productId,
-            })
-          );
-        }
-        toast.success("Product Name Updated!");
+        //TODO: invalidate queries getMany and get one
+        // if (eventId) {
+        //   await queryClient.invalidateQueries(
+        //     trpc.products.getOne.queryOptions({
+        //       eventId,
+        //     })
+        //   );
+        // }
+        toast.success("Event Title Updated!");
         setOpenEdit(false);
       },
       onError: (error) => {
@@ -72,16 +72,16 @@ export const EventTitleForm = ({ initialData, productId }: Props) => {
       },
     })
   );
-  const isLoading = createProduct.isPending || updateProductName.isPending;
+  const isLoading = createEvent.isPending || updateEvent.isPending;
   const onSubmit = (data: z.infer<typeof eventTitleFormSchema>) => {
     if (isEdit) {
-      updateProductName.mutate({
-        : data.title,
-        id: productId,
+      updateEvent.mutate({
+        title: data.title,
+        eventId,
       });
     } else
-      createProduct.mutate({
-        name: data.name,
+      createEvent.mutate({
+        title: data.title,
       });
   };
   if (isEdit) {
@@ -90,7 +90,7 @@ export const EventTitleForm = ({ initialData, productId }: Props) => {
         <div className="flex flex-col space-y-4">
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-md">Product Name</h3>
+              <h3 className="font-semibold text-md">Event Title</h3>
               {openEdit ? (
                 <Button
                   variant={"outline"}
@@ -112,7 +112,7 @@ export const EventTitleForm = ({ initialData, productId }: Props) => {
             </div>
             {!openEdit && (
               <span className="text-muted-foreground text-md">
-                {initialData.name}
+                {initialData.title}
               </span>
             )}
           </div>
@@ -123,16 +123,16 @@ export const EventTitleForm = ({ initialData, productId }: Props) => {
                 className="space-y-4"
               >
                 <FormField
-                  name="name"
+                  name="title"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Product Name</FormLabel>
+                      <FormLabel>Event Title</FormLabel>
                       <FormControl>
                         <Input
                           className="bg-white"
                           type="text"
-                          placeholder="e.g. Advanced Web Development"
+                          placeholder="e.g. Summer Gaming Expo 2025"
                           {...field}
                         />
                       </FormControl>
@@ -157,22 +157,23 @@ export const EventTitleForm = ({ initialData, productId }: Props) => {
           className=" flex flex-col space-y-8 max-w-xl"
         >
           <FormField
-            name="name"
+            name="title"
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col gap-y-4">
-                <FormLabel>Product Name</FormLabel>
+                <FormLabel>Event Title</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
-                    placeholder="e.g. Uno Card Game"
+                    placeholder="e.g. Summer Gaming Expo 2025"
                     {...field}
                   />
                 </FormControl>
                 <FormMessage />
                 <FormDescription className="leading-relaxed">
-                  Give your product a clear and recognizable title. This will
-                  help customers quickly identify it.
+                  Give your event a clear and recognizable title. This will help
+                  attendees quickly understand what the event is about and make
+                  it easier to find.
                 </FormDescription>
               </FormItem>
             )}
@@ -184,7 +185,7 @@ export const EventTitleForm = ({ initialData, productId }: Props) => {
               type="button"
               variant={"ghost"}
             >
-              <Link href={"/admin/products"}>Cancel</Link>
+              <Link href={"/admin/events"}>Cancel</Link>
             </Button>
 
             <Button disabled={isLoading} type="submit">
