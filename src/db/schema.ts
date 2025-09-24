@@ -201,3 +201,26 @@ export const blogs = pgTable("blogs", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+export const eventStatusEnum = pgEnum("event_status_enum", [
+  "ACTIVE",
+  "ENDED",
+  "UPCOMING",
+]);
+export const events = pgTable("events", {
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .$default(() => nanoid()),
+  title: text("event_title").notNull(),
+  description: text("event_description"),
+  coverImg: text("event_cover_img"),
+  location: text("event_location"),
+  eventDate: timestamp("event_date"),
+  status: eventStatusEnum("event_status").default("UPCOMING"),
+  isPosted: boolean("is_posted").default(false),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
