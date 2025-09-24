@@ -26,6 +26,24 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata }) => {
       return { uploadedBy: metadata.userId };
     }),
+  eventCoverImage: f({
+    image: {
+      maxFileSize: "4MB",
+      maxFileCount: 1,
+    },
+  })
+    .middleware(async () => {
+      const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+      if (!session) {
+        throw new UploadThingError("Unauthorized");
+      }
+      return { userId: session.user.id };
+    })
+    .onUploadComplete(async ({ metadata }) => {
+      return { uploadedBy: metadata.userId };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

@@ -5,6 +5,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { EventTitleForm } from "../components/event-title-form";
 import { EventDescriptionForm } from "../components/event-description-form";
 import { EventLocationForm } from "../components/event-location-form copy";
+import { EventCoverImageForm } from "../components/event-cover-img-form";
 
 interface Props {
   eventId: string;
@@ -34,6 +35,9 @@ export const CreateEventSetupView = ({ eventId }: Props) => {
   const initalLocData = {
     location: event.location ?? "",
   };
+  const initialCoverImgData = {
+    coverImg: event.coverImg ?? "",
+  };
   return (
     <div className="p-6 flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -62,7 +66,12 @@ export const CreateEventSetupView = ({ eventId }: Props) => {
           />
           <EventLocationForm initialData={initalLocData} eventId={eventId} />
         </div>
-        <div className="flex flex-col space-y-4">right</div>
+        <div className="flex flex-col space-y-4">
+          <EventCoverImageForm
+            initialData={initialCoverImgData}
+            eventId={eventId}
+          />
+        </div>
       </div>
     </div>
   );
