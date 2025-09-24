@@ -56,14 +56,14 @@ export const EventTitleForm = ({ initialData, eventId }: Props) => {
   const updateEvent = useMutation(
     trpc.events.update.mutationOptions({
       onSuccess: async () => {
-        //TODO: invalidate queries getMany and get one
-        // if (eventId) {
-        //   await queryClient.invalidateQueries(
-        //     trpc.products.getOne.queryOptions({
-        //       eventId,
-        //     })
-        //   );
-        // }
+        //TODO: invalidate queries getMany
+        if (eventId) {
+          await queryClient.invalidateQueries(
+            trpc.events.getOne.queryOptions({
+              eventId,
+            })
+          );
+        }
         toast.success("Event Title Updated!");
         setOpenEdit(false);
       },

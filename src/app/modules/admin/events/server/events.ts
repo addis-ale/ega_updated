@@ -52,4 +52,46 @@ export const eventsRoute = createTRPCRouter({
       }
       return updatedEvent;
     }),
+  getOne: protectedProcedure
+    .input(
+      z.object({
+        eventId: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const [existingEvent] = await db
+        .select()
+        .from(events)
+        .where(
+          and(eq(events.userId, ctx.auth.user.id), eq(events.id, input.eventId))
+        );
+      if (!existingEvent) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Event not found with this ID",
+        });
+      }
+      return existingEvent;
+    }),
+  remove: protectedProcedure
+    .input(
+      z.object({
+        eventId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const [removedEvent] = await db
+        .delete(events)
+        .where(
+          and(eq(events.id, input.eventId), eq(events.userId, ctx.auth.user.id))
+        )
+        .returning();
+      if (!removedEvent) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Event not found with this Id",
+        });
+      }
+      return removedEvent;
+    }),
 });
