@@ -14,6 +14,7 @@ import { Container } from "./container";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "../../../components/ui/button";
+import { isAdmin } from "@/lib/admin";
 export const Navbar = () => {
   const router = useRouter();
   const { data: session } = authClient.useSession();
@@ -86,6 +87,11 @@ export const Navbar = () => {
             <Button onClick={handleAuth}>
               {session ? "Sign Out" : "Sign In"}
             </Button>
+            {isAdmin(session?.user.id) && (
+              <Link href={"/admin"}>
+                <Button>Dashboard</Button>
+              </Link>
+            )}
           </div>
         </nav>
       </Container>

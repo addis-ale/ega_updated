@@ -8,13 +8,14 @@ import { AdminEventsView } from "@/app/modules/admin/events/ui/views/events-view
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { ListHeader } from "@/app/modules/admin/ui/components/list-header";
 
 const EventsPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
   if (!session) {
-    redirect("sign-in");
+    redirect("/sign-in");
   }
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(trpc.events.getMany.queryOptions());
@@ -28,6 +29,8 @@ const EventsPage = async () => {
           Manage all upcoming, active, and past events from here.
         </p>
       </header>
+      <ListHeader label="New Event" href="/admin/events/new" />
+
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<LoadingState />}>
           <ErrorBoundary fallback={<ErrorState />}>

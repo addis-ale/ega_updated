@@ -10,6 +10,7 @@ import { blogRoutes } from "@/app/modules/admin/blogs/server/blogs";
 import { blogPostsRoute } from "@/app/modules/blog/server/blog-posts";
 import { eventsRoute } from "@/app/modules/admin/events/server/events";
 import { eventPostsRoute } from "@/app/modules/events/server/events-post";
+import { overViewRoutes } from "@/app/modules/admin/server/overview";
 export const appRouter = createTRPCRouter({
   products: productRoute,
   productImages: productImagesRoute,
@@ -22,6 +23,7 @@ export const appRouter = createTRPCRouter({
   blogPosts: blogPostsRoute,
   events: eventsRoute,
   eventPosts: eventPostsRoute,
+  overView: overViewRoutes,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

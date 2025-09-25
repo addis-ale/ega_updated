@@ -6,6 +6,7 @@ import {
 } from "@/constants";
 import { db } from "@/db";
 import { products } from "@/db/schema";
+import { isAdmin } from "@/lib/admin";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, count, desc, eq, ilike } from "drizzle-orm";
@@ -18,6 +19,9 @@ export const productRoute = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      if (!isAdmin(ctx.auth.user.id)) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
+      }
       const [newProduct] = await db
         .insert(products)
         .values({ name: input.name, userId: ctx.auth.user.id })

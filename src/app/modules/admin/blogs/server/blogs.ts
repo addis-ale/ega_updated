@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { blogs } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import { isAdmin } from "@/lib/admin";
 export const blogRoutes = createTRPCRouter({
   create: protectedProcedure
     .input(
@@ -12,6 +13,9 @@ export const blogRoutes = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      if (!isAdmin(ctx.auth.user.id)) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
+      }
       const [createdBlog] = await db
         .insert(blogs)
         .values({ title: input.title, userId: ctx.auth.user.id })
@@ -66,6 +70,14 @@ export const blogRoutes = createTRPCRouter({
       }
       return existingBlog;
     }),
+  getMany: protectedProcedure.query(async ({ ctx }) => {
+    const myBlogs = await db
+      .select()
+      .from(blogs)
+      .where(eq(blogs.userId, ctx.auth.user.id));
+
+    return myBlogs;
+  }),
   remove: protectedProcedure
     .input(
       z.object({

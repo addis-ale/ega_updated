@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { events } from "@/db/schema";
+import { isAdmin } from "@/lib/admin";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, eq } from "drizzle-orm";
@@ -12,6 +13,9 @@ export const eventsRoute = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      if (!isAdmin(ctx.auth.user.id)) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
+      }
       const [createdEvent] = await db
         .insert(events)
         .values({
