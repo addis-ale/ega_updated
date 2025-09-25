@@ -48,6 +48,7 @@ export const CreateNewProductSetupView = ({ productId }: Props) => {
           queryClient.invalidateQueries(
             trpc.products.getOne.queryOptions({ productId })
           ),
+          queryClient.invalidateQueries(trpc.products.getMany.queryOptions({})),
         ]);
         toast.success("Product Posted");
       },
