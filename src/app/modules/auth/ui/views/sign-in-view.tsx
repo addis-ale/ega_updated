@@ -2,7 +2,6 @@
 import { z } from "zod";
 import { ArrowLeftCircle, OctagonAlert } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -153,7 +152,7 @@ export const SignInView = () => {
                     Or continue with
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center">
                   <Button
                     variant={"outline"}
                     type="button"
@@ -162,15 +161,7 @@ export const SignInView = () => {
                     disabled={pending}
                   >
                     <FcGoogle />
-                  </Button>
-                  <Button
-                    variant={"outline"}
-                    type="button"
-                    className="w-full"
-                    onClick={() => onSocial("github")}
-                    disabled={pending}
-                  >
-                    <FaGithub />
+                    Google
                   </Button>
                 </div>
                 <div className="text-center text-sm">
@@ -185,19 +176,7 @@ export const SignInView = () => {
               </div>
             </form>
           </Form>
-          <div className="bg-[url('/assets/images/gameon.jpg')] bg-cover bg-center bg-no-repeat relative hidden md:flex flex-col gap-y-4 items-center justify-center">
-            {/* <Image
-              src="/logo.svg"
-              alt="logo"
-              className="h-[92px] w-[92px]"
-              width={92}
-              height={92}
-            /> */}
-            {/* <div className="flex flex-col items-center justify-center gap-4">
-              <p className="text-3xl font-bold text-black">EGA</p>
-              <p className="text-black font-semibold">Chewata Awaqi</p>
-            </div> */}
-          </div>
+          <div className="bg-[url('https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXBpm92uSFWAQGNyrV4lvLe5s03SYUEZciImkJ')] bg-cover bg-center bg-no-repeat relative hidden md:flex flex-col gap-y-4 items-center justify-center"></div>
         </CardContent>
       </Card>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">

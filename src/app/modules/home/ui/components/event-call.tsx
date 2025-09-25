@@ -71,7 +71,7 @@ export const EventCall = () => {
         <div className="flex-1 grid grid-cols-2 min-h-[300px] md:min-h-[400px] rounded-sm gap-2">
           <div className="col-span-2 relative event-image">
             <Image
-              src="/assets/images/gameon.jpg"
+              src="https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXBpm92uSFWAQGNyrV4lvLe5s03SYUEZciImkJ"
               alt="game on"
               fill
               className="object-cover rounded-sm"
@@ -79,7 +79,7 @@ export const EventCall = () => {
           </div>
           <div className="relative event-image">
             <Image
-              src="/assets/images/gamenight.jpg"
+              src="https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXXpgwFfVAGtkeFy0cWZqOfjhRKLY9BmQiwu1l"
               alt="game night"
               fill
               className="object-cover rounded-sm"
@@ -87,7 +87,7 @@ export const EventCall = () => {
           </div>
           <div className="relative event-image">
             <Image
-              src="/assets/images/gamezone.jpg"
+              src="https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXvaJVWZDACiZrg8NVypcU2mSauMB3f4WkK7lY"
               alt="game zone"
               fill
               className="object-cover rounded-sm"

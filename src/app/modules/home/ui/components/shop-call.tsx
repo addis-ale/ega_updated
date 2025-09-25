@@ -79,7 +79,9 @@ export const ShopCall = () => {
         {/* left image */}
         <div className="flex-1 w-full relative">
           <Image
-            src={"/assets/images/blackjoystice.jpg"}
+            src={
+              "https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXYWrAHTE219bAyYhOWpHFLzXMec35ZKIl0VoC"
+            }
             alt="game"
             fill
             className="object-cover img rounded-sm"
@@ -89,7 +91,9 @@ export const ShopCall = () => {
         <div className="flex-1 w-full grid grid-cols-2 ">
           <div className="relative">
             <Image
-              src={"/assets/images/blackdart.jpg"}
+              src={
+                "https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXdSHZx1skizI1CSlj5naP6mAqheKwfTFOsQ2t"
+              }
               alt="game"
               fill
               className="object-cover img rounded-sm"
@@ -97,7 +101,9 @@ export const ShopCall = () => {
           </div>
           <div className="relative">
             <Image
-              src={"/assets/images/uno.jpg"}
+              src={
+                "https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXTpW8Cew0hsfOx4ijbwY7ZEXQnSe3KupgaBD2"
+              }
               alt="game"
               fill
               className="object-cover img rounded-sm"
@@ -105,7 +111,9 @@ export const ShopCall = () => {
           </div>
           <div className="relative col-span-2">
             <Image
-              src={"/assets/images/tennis.jpg"}
+              src={
+                "https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXKscEqlLdPVR2bcSfGJsxjeYDTrnvkoW3wF1L"
+              }
               alt="game"
               fill
               className="object-cover img rounded-sm"

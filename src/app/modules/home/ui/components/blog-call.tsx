@@ -35,7 +35,9 @@ export const BlogCall = () => {
         {/* left */}
         <div className="flex-1 relative min-h-[300px] md:min-h-0 blog-fade">
           <Image
-            src={"/assets/images/blog.jpg"}
+            src={
+              "https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXhxD0mUjg4CDjfPOczFQi7BsHJKm5wuVWLT23"
+            }
             alt="blogimage"
             className="object-cover rounded-sm"
             fill

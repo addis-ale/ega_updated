@@ -29,9 +29,9 @@ const navlinks = [
   },
 ];
 const heroImages = [
-  "/assets/images/dart.jpg",
-  "/assets/images/ps5.jpg",
-  "/assets/images/chess.jpg",
+  "https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXES7dq776FPnXtjM5y37sx2firIH0CwaYcmKo",
+  "https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXN456D2dYGSgXuPFvNVZzaLiC8prMe3hoyIqA",
+  "https://uaxmj7uver.ufs.sh/f/rZEehYPlP8SXK9Gz96vLdPVR2bcSfGJsxjeYDTrnvkoW3wF1",
 ];
 const whyChooseUs = [
   {
