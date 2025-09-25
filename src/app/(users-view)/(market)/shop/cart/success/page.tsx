@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 //import { CheckoutSuccessView } from "@/app/modules/market/cart/ui/views/checkout-success-view";
 import { auth } from "@/lib/auth";
+import { CheckoutSuccessView } from "@/app/modules/market/cart/ui/views/checkout-success-view";
 
 const SuccessPage = async () => {
   const session = await auth.api.getSession({
@@ -10,8 +11,7 @@ const SuccessPage = async () => {
   if (!session) {
     redirect("/sign-in");
   }
-  // return <CheckoutSuccessView />;
-  return <div>checkout </div>;
+  return <CheckoutSuccessView />;
 };
 
 export default SuccessPage;
