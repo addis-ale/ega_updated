@@ -1,5 +1,7 @@
 "use client";
 import Image from "next/image";
+
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Button } from "@/components/ui/button";
@@ -49,9 +51,11 @@ export const BlogCall = () => {
             highlights.
           </p>
           <div className="blog-fade">
-            <Button className="text-xl px-5 py-7 md:p-8 font-semibold bg-blue-500 cursor-pointer">
-              Visit Our Blog
-            </Button>
+            <Link href="/blogs">
+              <Button className="text-xl px-5 py-7 md:p-8 font-semibold bg-blue-500 cursor-pointer">
+                Visit Our Blog
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

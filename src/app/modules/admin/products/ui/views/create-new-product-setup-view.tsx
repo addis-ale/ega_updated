@@ -79,7 +79,6 @@ export const CreateNewProductSetupView = ({ productId }: Props) => {
     category: product.categoryId,
     rentOrSaleOrBoth: product.rentOrSale,
     coverImg: productImages.length > 0 ? true : null,
-    // TODO make image also required
   };
   const finalrequiredObj =
     requiredObj.rentOrSaleOrBoth === "BOTH"

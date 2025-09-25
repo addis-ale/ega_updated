@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "../../../../../components/ui/button";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import Link from "next/link";
 
 export const EventCall = () => {
   const containerRef = useRef(null);
@@ -58,9 +59,11 @@ export const EventCall = () => {
             </span>
           </p>
           <div className="event-fade">
-            <Button className="text-xl px-5 py-7 md:p-8 font-semibold bg-[#FACC15] cursor-pointer">
-              Join The Action
-            </Button>
+            <Link href={"/events"}>
+              <Button className="text-xl px-5 py-7 md:p-8 font-semibold bg-[#FACC15] cursor-pointer">
+                Join The Action
+              </Button>
+            </Link>
           </div>
         </div>
 
