@@ -33,6 +33,13 @@ export const eventsRoute = createTRPCRouter({
           .string()
           .transform((val) => new Date(val))
           .optional(),
+        eventTime: z
+          .string()
+          .regex(/^([0-1]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/, {
+            message: "Invalid time format. Use HH:MM or HH:MM:SS",
+          })
+          .optional(),
+
         status: z.enum(["UPCOMING", "ENDED", "ACTIVE"]).optional(),
         isPosted: z.boolean().optional(),
       })

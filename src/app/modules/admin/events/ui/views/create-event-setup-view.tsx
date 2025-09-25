@@ -17,6 +17,7 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { ProductActions } from "../../../products/ui/components/product-action";
 import { Banner } from "@/components/banner";
 import LoadingState from "@/components/loading-state";
+import { EventTimeForm } from "../components/event-time-form";
 
 interface Props {
   eventId: string;
@@ -72,6 +73,7 @@ export const CreateEventSetupView = ({ eventId }: Props) => {
     coverImg: event.coverImg,
     location: event.location,
     eventDate: event.eventDate,
+    eventTime: event.eventTime,
   };
   const requiredFields = Object.values(requiredObj);
   const totalFields = requiredFields.length;
@@ -92,6 +94,9 @@ export const CreateEventSetupView = ({ eventId }: Props) => {
   };
   const initialEventDateData = {
     eventDate: event.eventDate ?? "",
+  };
+  const initialEventTimeData = {
+    eventTime: event.eventTime ?? "",
   };
   const handlePostEvent = (isPosted: boolean) => {
     if (isPosted) {
@@ -164,6 +169,10 @@ export const CreateEventSetupView = ({ eventId }: Props) => {
                 />
                 <EventDateForm
                   initialData={initialEventDateData}
+                  eventId={eventId}
+                />
+                <EventTimeForm
+                  initialData={initialEventTimeData}
                   eventId={eventId}
                 />
               </div>

@@ -8,6 +8,7 @@ import {
   numeric,
   integer,
   unique,
+  time,
 } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
@@ -216,6 +217,7 @@ export const events = pgTable("events", {
   coverImg: text("event_cover_img"),
   location: text("event_location"),
   eventDate: timestamp("event_date"),
+  eventTime: time("event_time"),
   status: eventStatusEnum("event_status").default("UPCOMING"),
   isPosted: boolean("is_posted").default(false),
   userId: text("user_id")
