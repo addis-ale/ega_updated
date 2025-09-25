@@ -5,8 +5,17 @@ import { ErrorState } from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { AdminEventsView } from "@/app/modules/admin/events/ui/views/events-view";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-const EventsPage = () => {
+const EventsPage = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    redirect("sign-in");
+  }
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(trpc.events.getMany.queryOptions());
   return (
