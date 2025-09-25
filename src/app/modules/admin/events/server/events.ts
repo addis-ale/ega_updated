@@ -104,4 +104,11 @@ export const eventsRoute = createTRPCRouter({
       }
       return removedEvent;
     }),
+  getMany: protectedProcedure.query(async ({ ctx }) => {
+    const myEvents = await db
+      .select()
+      .from(events)
+      .where(eq(events.userId, ctx.auth.user.id));
+    return myEvents;
+  }),
 });
