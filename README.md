@@ -32,7 +32,7 @@ A modern, full-stack e-commerce platform built to make shopping for game and spo
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/your-username/ega-marketplace.git
+git clone https://github.com/addis-ale/ega_updated
 cd ega-marketplace
 ```
 
